@@ -1,87 +1,85 @@
-# Welcome to React Router!
+# Aceros Aldamar — Website Oficial
 
-A modern, production-ready template for building full-stack React applications using React Router.
+Sitio web corporativo de **Aceros Aldamar**, empresa líder en la comercialización y distribución de productos siderúrgicos de alta calidad para los sectores de construcción, minería e industria en el Perú.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+![Aceros Aldamar Preview](https://acerosaldamar.com/og-image.jpg)
 
-## Features
+## ✨ Características Principales
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+- **Diseño Premium**: Interfaz moderna con estética *glassmorphism*, animaciones fluidas y una experiencia de usuario de alto nivel.
+- **Optimización de Rendimiento**:
+  - Hidratación ultrarrápida (~10ms).
+  - Gestión global de eventos de scroll mediante patrón singleton.
+  - Uso de variables CSS para interacciones de mouse (cero re-renders innecesarios).
+- **SEO & Sitelinks**:
+  - Metadatos optimizados para todas las rutas.
+  - Implementación de JSON-LD (Organization y WebSite) para mejores resultados en Google.
+  - Sitemap y Robots.txt autogenerados.
+- **Catálogo Dinámico**: Listado de productos estructurado por categorías con especificaciones técnicas detalladas y tablas de dimensiones.
+- **Contacto Interactivo**: Botón de WhatsApp con burbuja de chat automática y tooltip inteligente.
 
-## Getting Started
+## 🛠️ Tecnologías
 
-### Installation
+- **Framework**: [React Router v7](https://reactrouter.com/) (Remix evolution).
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/).
+- **Lenguaje**: [TypeScript](https://www.typescriptlang.org/).
+- **Bundler**: [Vite](https://vitejs.dev/).
+- **Iconografía**: Lucide React / Custom SVGs.
 
-Install the dependencies:
+## 📁 Estructura del Proyecto
 
-```bash
-npm install
+```text
+app/
+├── components/          # Componentes globales (Layout, UI, Icons)
+├── features/            # Lógica y componentes organizados por dominio
+│   ├── home/           # Landing page y Hero
+│   ├── about/          # Historia, Misión y Visión
+│   ├── products/       # Catálogo y detalles de producto
+│   ├── contact/        # Formularios y mapas
+│   └── shared/         # Hooks y utilidades compartidas
+├── lib/                # Datos estáticos y lógica de negocio (Catalog)
+├── routes/             # Definición de rutas y entry points
+├── app.css             # Estilos globales y tokens de diseño
+└── root.tsx            # Layout raíz y configuración de providers
 ```
 
-### Development
+## 🚀 Inicio Rápido
 
-Start the development server with HMR:
+### Requisitos
 
+- Node.js (versión 20 o superior)
+- npm o pnpm
+
+### Instalación
+
+1. Clona el repositorio.
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
+
+### Desarrollo
+
+Inicia el servidor de desarrollo con HMR:
 ```bash
 npm run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
+### Producción
 
-## Building for Production
-
-Create a production build:
-
+Construye la aplicación para producción:
 ```bash
 npm run build
 ```
 
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
+Ejecuta el servidor de producción:
 ```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
+npm run start
 ```
 
-The containerized application can be deployed to any platform that supports Docker, including:
+## 📄 Licencia
 
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+Este proyecto es propiedad de **Aceros Aldamar**. Todos los derechos reservados.
 
 ---
-
-Built with ❤️ using React Router.
+Sitio desarrollado con ❤️ para impulsar la industria siderúrgica peruana.
