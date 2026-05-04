@@ -3,7 +3,7 @@ import type { Route } from "./+types/productos.$productId";
 import { catalogProducts, getProductById } from "~/lib/catalog";
 import { ProductDetails } from "~/features/products/components/ProductDetails";
 
-export async function loader({ params }: Route.LoaderArgs) {
+export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const product = getProductById(params.productId);
   if (!product) {
     throw new Response("Not Found", { status: 404 });
@@ -19,7 +19,7 @@ export function meta({ data }: Route.MetaArgs) {
 }
 
 export default function ProductoDetalle() {
-  const { productId } = useLoaderData<typeof loader>();
+  const { productId } = useLoaderData<typeof clientLoader>();
   const product = getProductById(productId);
   if (!product) return null;
 
