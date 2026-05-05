@@ -82,7 +82,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               "@type": "Organization",
               "name": "Aceros Aldamar",
               "url": "https://acerosaldamar.com",
-              "logo": "https://acerosaldamar.com/logo-ico.svg",
+              "logo": "https://acerosaldamar.com/logo.ico",
               "contactPoint": {
                 "@type": "ContactPoint",
                 "telephone": "+51 991 047 687",
