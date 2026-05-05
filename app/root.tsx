@@ -17,7 +17,7 @@ export const links: Route.LinksFunction = () => [
   { rel: "stylesheet", href: appStyles },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
 
-  { rel: "icon", type: "image/svg+xml", href: "/logo-ico.svg" },
+  { rel: "icon", type: "image/svg+xml", href: "/logo.ico" },
   {
     rel: "preconnect",
     href: "https://fonts.gstatic.com",
