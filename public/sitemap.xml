@@ -21,4 +21,11 @@
     <lastmod>2026-05-04</lastmod>
     <priority>0.8</priority>
   </url>
+  <!-- Product Categories -->
+  <url><loc>https://acerosaldamar.com/productos?category=construccion</loc><priority>0.7</priority></url>
+  <url><loc>https://acerosaldamar.com/productos?category=perfiles</loc><priority>0.7</priority></url>
+  <url><loc>https://acerosaldamar.com/productos?category=ejes</loc><priority>0.7</priority></url>
+  <url><loc>https://acerosaldamar.com/productos?category=tubos-con-costura</loc><priority>0.7</priority></url>
+  <url><loc>https://acerosaldamar.com/productos?category=planchas-lac</loc><priority>0.7</priority></url>
+  <url><loc>https://acerosaldamar.com/productos?category=planchas-especiales</loc><priority>0.7</priority></url>
 </urlset>

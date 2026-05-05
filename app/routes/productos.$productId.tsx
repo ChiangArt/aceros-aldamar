@@ -3,6 +3,10 @@ import type { Route } from "./+types/productos.$productId";
 import { catalogProducts, getProductById } from "~/lib/catalog";
 import { ProductDetails } from "~/features/products/components/ProductDetails";
 
+export async function prerender() {
+  return catalogProducts.map((p) => `/productos/${p.id}`);
+}
+
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const product = getProductById(params.productId);
   if (!product) {
@@ -18,6 +22,43 @@ export function meta({ data }: Route.MetaArgs) {
   return [{ title }, { name: "description", content: desc }];
 }
 
+export function BreadcrumbSchema({ productId }: { productId: string }) {
+  const p = getProductById(productId);
+  if (!p) return null;
+  
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": "https://acerosaldamar.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Productos",
+        "item": "https://acerosaldamar.com/productos"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": p.name,
+        "item": `https://acerosaldamar.com/productos/${p.id}`
+      }
+    ]
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
 export default function ProductoDetalle() {
   const { productId } = useLoaderData<typeof clientLoader>();
   const product = getProductById(productId);
@@ -29,6 +70,7 @@ export default function ProductoDetalle() {
 
   return (
     <main className="pt-28 md:pt-32 pb-24">
+      <BreadcrumbSchema productId={productId} />
       <ProductDetails product={product} related={related} />
     </main>
   );
