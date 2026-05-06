@@ -58,15 +58,17 @@ export function ContactForm() {
         EMAILJS_CONFIG.SERVICE_ID,
         EMAILJS_CONFIG.TEMPLATE_ID,
         formRef.current,
-        EMAILJS_CONFIG.PUBLIC_KEY
+        EMAILJS_CONFIG.PUBLIC_KEY,
       );
-      
+
       setSent(true);
       formRef.current.reset();
       window.setTimeout(() => setSent(false), 4000);
     } catch (error) {
       console.error("Error al enviar el correo:", error);
-      alert("Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo.");
+      alert(
+        "Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo.",
+      );
     } finally {
       setLoading(false);
     }
@@ -135,8 +137,17 @@ export function ContactForm() {
               className="rounded-3xl bg-neutral-900/50 backdrop-blur-sm border border-white/5 hover:border-primary/25 hover:shadow-[0_30px_90px_rgba(0,0,0,0.6)] transition-all duration-300 p-8 md:p-10 space-y-5"
             >
               <div className="grid sm:grid-cols-2 gap-5">
-                <Input name="user_name" label="Nombre" required placeholder="Tu nombre" />
-                <Input name="user_company" label="Empresa" placeholder="Tu empresa" />
+                <Input
+                  name="user_name"
+                  label="Nombre"
+                  required
+                  placeholder="Tu nombre"
+                />
+                <Input
+                  name="user_company"
+                  label="Empresa"
+                  placeholder="Tu empresa"
+                />
               </div>
 
               <Input
@@ -182,7 +193,11 @@ export function ContactForm() {
                 isLoading={loading}
                 icon={sent ? "check-circle" : "send"}
               >
-                {sent ? "Enviado correctamente" : loading ? "Enviando..." : "Enviar Cotización"}
+                {sent
+                  ? "Enviado correctamente"
+                  : loading
+                    ? "Enviando..."
+                    : "Enviar Cotización"}
               </Button>
             </form>
           </div>
@@ -191,4 +206,3 @@ export function ContactForm() {
     </section>
   );
 }
-
