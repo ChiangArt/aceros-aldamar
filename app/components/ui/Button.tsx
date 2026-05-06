@@ -1,6 +1,7 @@
 import { type ButtonHTMLAttributes, type ReactNode } from "react";
 import { Link } from "react-router";
 import { Icon, type IconName } from "~/components/icons/Icon";
+import { LottieLoader } from "./LottieLoader";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
@@ -42,14 +43,16 @@ export function Button({
 
   const content = (
     <>
-      {isLoading ? (
-        <Icon name="loader" size={18} className="animate-spin" />
-      ) : (
-        <>
-          {icon && iconPosition === "left" && <Icon name={icon} size={size === "sm" ? 14 : 18} />}
-          {children}
-          {icon && iconPosition === "right" && <Icon name={icon} size={size === "sm" ? 14 : 18} />}
-        </>
+      <div className={`flex items-center justify-center gap-2 transition-opacity duration-300 ${isLoading ? "opacity-0" : "opacity-100"}`}>
+        {icon && iconPosition === "left" && <Icon name={icon} size={size === "sm" ? 14 : 18} />}
+        {children}
+        {icon && iconPosition === "right" && <Icon name={icon} size={size === "sm" ? 14 : 18} />}
+      </div>
+
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <LottieLoader size={50} className="brightness-0 invert" />
+        </div>
       )}
       
       {/* Glow Effect on Hover */}

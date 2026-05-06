@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
+import emailjs from "@emailjs/browser";
 import { Badge } from "~/components/ui/Badge";
 import { SectionTitle } from "~/components/ui/SectionTitle";
 import { Icon, type IconName } from "~/components/icons/Icon";
@@ -8,11 +9,14 @@ import { Button } from "~/components/ui/Button";
 import { Input } from "~/components/ui/Input";
 import { TextArea } from "~/components/ui/TextArea";
 import { Select } from "~/components/ui/Select";
+import { EMAILJS_CONFIG } from "~/lib/emailjs.config";
 
 type InfoItem = { icon: IconName; title: string; text: string };
 
 export function ContactForm() {
+  const formRef = useRef<HTMLFormElement>(null);
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [sp] = useSearchParams();
   const preselected = sp.get("producto") ?? "";
   const [productId, setProductId] = useState(preselected);
@@ -43,10 +47,29 @@ export function ContactForm() {
     [],
   );
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setSent(true);
-    window.setTimeout(() => setSent(false), 4000);
+    if (!formRef.current) return;
+
+    setLoading(true);
+
+    try {
+      await emailjs.sendForm(
+        EMAILJS_CONFIG.SERVICE_ID,
+        EMAILJS_CONFIG.TEMPLATE_ID,
+        formRef.current,
+        EMAILJS_CONFIG.PUBLIC_KEY
+      );
+      
+      setSent(true);
+      formRef.current.reset();
+      window.setTimeout(() => setSent(false), 4000);
+    } catch (error) {
+      console.error("Error al enviar el correo:", error);
+      alert("Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -107,15 +130,17 @@ export function ContactForm() {
             data-reveal
           >
             <form
+              ref={formRef}
               onSubmit={handleSubmit}
               className="rounded-3xl bg-neutral-900/50 backdrop-blur-sm border border-white/5 hover:border-primary/25 hover:shadow-[0_30px_90px_rgba(0,0,0,0.6)] transition-all duration-300 p-8 md:p-10 space-y-5"
             >
               <div className="grid sm:grid-cols-2 gap-5">
-                <Input label="Nombre" required placeholder="Tu nombre" />
-                <Input label="Empresa" placeholder="Tu empresa" />
+                <Input name="user_name" label="Nombre" required placeholder="Tu nombre" />
+                <Input name="user_company" label="Empresa" placeholder="Tu empresa" />
               </div>
 
               <Input
+                name="user_email"
                 label="Email"
                 type="email"
                 required
@@ -123,6 +148,7 @@ export function ContactForm() {
               />
 
               <Select
+                name="product_name"
                 label="Producto"
                 value={productId}
                 onChange={(e) => setProductId(e.target.value)}
@@ -134,7 +160,7 @@ export function ContactForm() {
                       .filter((p) => p.categoryId === c.id)
                       .sort((a, b) => a.name.localeCompare(b.name, "es"))
                       .map((p) => (
-                        <option key={p.id} value={p.id}>
+                        <option key={p.id} value={p.name}>
                           {p.name}
                         </option>
                       ))}
@@ -143,6 +169,7 @@ export function ContactForm() {
               </Select>
 
               <TextArea
+                name="message"
                 label="Mensaje"
                 required
                 placeholder="Cuéntanos sobre tu proyecto..."
@@ -152,9 +179,10 @@ export function ContactForm() {
                 type="submit"
                 variant="primary"
                 className="w-full py-4"
+                isLoading={loading}
                 icon={sent ? "check-circle" : "send"}
               >
-                {sent ? "Enviado correctamente" : "Enviar Cotización"}
+                {sent ? "Enviado correctamente" : loading ? "Enviando..." : "Enviar Cotización"}
               </Button>
             </form>
           </div>
@@ -163,3 +191,4 @@ export function ContactForm() {
     </section>
   );
 }
+
