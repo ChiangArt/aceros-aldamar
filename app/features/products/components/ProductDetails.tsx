@@ -33,7 +33,7 @@ export function ProductDetails({ product, related }: Props) {
         <span>/</span>
         {category && (
           <>
-            <Link to={`/productos?cat=${category.id}`} data-hover className="hover:text-neutral-300 transition-colors">
+            <Link to={`/productos/${category.id}`} data-hover className="hover:text-neutral-300 transition-colors">
               {category.name}
             </Link>
             <span>/</span>
@@ -47,7 +47,7 @@ export function ProductDetails({ product, related }: Props) {
         <div className="lg:col-span-6">
           <div className="rounded-3xl overflow-hidden border border-white/5 bg-neutral-900/35">
             <div className="relative aspect-[4/3] overflow-hidden">
-              <img src={product.image} alt={product.name} className="absolute inset-0 w-full h-full object-cover" />
+              <img src={product.image} alt={product.name} className="absolute inset-0 w-full h-full object-cover" loading="eager" />
               <img src={product.imageHover} alt={product.name} className="absolute inset-0 w-full h-full object-cover opacity-0 hover:opacity-100 transition-opacity duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
             </div>
@@ -161,12 +161,12 @@ export function ProductDetails({ product, related }: Props) {
               <h2 className="font-playfair text-2xl md:text-3xl font-bold tracking-tight text-white mt-3">Productos relacionados</h2>
             </div>
             {category && (
-              <Link to={`/productos?cat=${category.id}`} data-hover className="text-xs font-semibold text-primary hover:text-primary/80 transition-colors">Ver todos</Link>
+              <Link to={`/productos/${category.id}`} data-hover className="text-xs font-semibold text-primary hover:text-primary/80 transition-colors">Ver todos</Link>
             )}
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {related.map((rp) => (
-              <Link key={rp.id} to={`/productos/${rp.id}`} data-hover className="rounded-2xl overflow-hidden bg-neutral-900/40 border border-white/5 hover:border-primary/25 transition-all duration-300 group">
+              <Link key={rp.id} to={`/producto/${rp.id}`} data-hover className="rounded-2xl overflow-hidden bg-neutral-900/40 border border-white/5 hover:border-primary/25 transition-all duration-300 group">
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <img src={rp.image} alt={rp.name} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 opacity-100 group-hover:opacity-0" />
                   <img src={rp.imageHover} alt={rp.name} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 opacity-0 group-hover:opacity-100" />

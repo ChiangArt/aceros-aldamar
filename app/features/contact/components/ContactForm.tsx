@@ -56,7 +56,14 @@ export function ContactForm() {
     try {
       await emailjs.sendForm(
         EMAILJS_CONFIG.SERVICE_ID,
-        EMAILJS_CONFIG.TEMPLATE_ID,
+        "template_qu0o8xr",
+        formRef.current,
+        EMAILJS_CONFIG.PUBLIC_KEY,
+      );
+
+      await emailjs.sendForm(
+        EMAILJS_CONFIG.SERVICE_ID,
+        "template_93isr97",
         formRef.current,
         EMAILJS_CONFIG.PUBLIC_KEY,
       );
@@ -66,9 +73,7 @@ export function ContactForm() {
       window.setTimeout(() => setSent(false), 4000);
     } catch (error) {
       console.error("Error al enviar el correo:", error);
-      alert(
-        "Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo.",
-      );
+      alert("Hubo un error al enviar el mensaje.");
     } finally {
       setLoading(false);
     }

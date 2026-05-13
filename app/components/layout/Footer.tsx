@@ -67,7 +67,7 @@ export function Footer() {
                 {catalogCategories.map((c) => (
                   <Link
                     key={c.id}
-                    to={`/productos?cat=${c.id}`}
+                    to={`/productos/${c.id}`}
                     data-hover
                     className="block text-sm text-neutral-500 hover:text-primary transition-colors"
                   >

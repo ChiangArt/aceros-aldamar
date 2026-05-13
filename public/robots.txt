@@ -1,4 +1,7 @@
 User-agent: *
+
 Allow: /
+
+Disallow: /*?*
 
 Sitemap: https://acerosaldamar.com/sitemap.xml

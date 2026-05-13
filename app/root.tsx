@@ -5,6 +5,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
 } from "react-router";
 import { Navbar } from "~/components/layout/Navbar";
 import { Footer } from "~/components/layout/Footer";
@@ -12,6 +13,50 @@ import { WhatsAppButton } from "~/components/WhatsAppButton";
 import { ScrollProgress } from "~/components/ui/ScrollProgress";
 import appStyles from "./app.css?url";
 import type { Route } from "./+types/root";
+import { catalogCategories, catalogProducts } from "~/lib/catalog";
+
+
+export const meta: Route.MetaFunction = ({ location }) => {
+  const pathname = location.pathname.replace(/\/$/, "") || "/";
+  const canonical = `https://acerosaldamar.com${pathname === "/" ? "" : pathname}`;
+
+  let title = "Aceros Aldamar";
+  let description = "Venta de aceros y materiales de construcción en Perú.";
+
+  if (pathname.startsWith("/productos/")) {
+    const slug = pathname.split("/productos/")[1];
+    const category = catalogCategories.find((c) => c.id === slug);
+    const name = category ? category.name : slug.replace(/-/g, " ");
+    title = `${name} — Catálogo de Productos | Aceros Aldamar`;
+    description = `Explora nuestra variedad de ${name.toLowerCase()}. Calidad certificada y entrega inmediata en Aceros Aldamar.`;
+  }
+
+  if (pathname.startsWith("/producto/")) {
+    const slug = pathname.split("/producto/")[1];
+    const product = catalogProducts.find((p) => p.id === slug);
+    const name = product ? product.name : slug.replace(/-/g, " ");
+    title = `${name} | Aceros Aldamar`;
+    description = product
+      ? product.shortDescription
+      : `Compra ${name} en Perú. Calidad garantizada en Aceros Aldamar.`;
+  }
+
+  if (pathname === "/productos") {
+    title = "Productos de acero en Perú | Aceros Aldamar";
+    description = "Catálogo de productos de acero para construcción e industria.";
+  }
+
+  return [
+    { title },
+    { name: "description", content: description },
+
+    {
+      tagName: "link",
+      rel: "canonical",
+      href: canonical,
+    },
+  ];
+};
 
 export const links: Route.LinksFunction = () => [
   { rel: "stylesheet", href: appStyles },
@@ -113,7 +158,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
             }),
           }}
         />
-        <link rel="canonical" href="https://acerosaldamar.com" />
         <Meta />
         <Links />
       </head>
