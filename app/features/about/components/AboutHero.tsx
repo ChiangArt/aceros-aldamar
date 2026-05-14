@@ -11,6 +11,7 @@ export function AboutHero() {
           src="/nosotros/nosotros-1.webp"
           alt="Aceros Aldamar Hero"
           className="w-full h-full object-cover opacity-60 scale-105"
+          loading="eager"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]/30" />
       </div>
@@ -21,7 +22,7 @@ export function AboutHero() {
           data-reveal
         >
           <Badge>Empresa</Badge>
-          <h1 className="font-playfair text-5xl md:text-8xl font-bold text-white mt-6 mb-8 leading-[1.05] tracking-tighter">
+          <h1 className="font-sora text-5xl md:text-8xl font-bold text-white mt-6 mb-8 leading-[1.05] tracking-tighter">
             Calidad, respaldo y cumplimiento <br />
             <span className="bg-gradient-to-br from-primary via-[#33adff] to-[#99d6ff] bg-clip-text text-transparent">
               ACEROS ALDAMAR
@@ -30,8 +31,8 @@ export function AboutHero() {
           <p className="text-neutral-400 text-lg md:text-xl font-light leading-relaxed max-w-3xl mx-auto">
             Somos un equipo enfocado en abastecer aceros y derivados con
             asesoría técnica, trazabilidad y cumplimiento. Nuestro objetivo es
-            que tu proyecto avance con seguridad, continuidad y soporte real
-            en cada etapa.
+            que tu proyecto avance con seguridad, continuidad y soporte real en
+            cada etapa.
           </p>
         </div>
       </div>

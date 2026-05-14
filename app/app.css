@@ -2,34 +2,34 @@
 
 @theme {
   /* Brand Colors */
-  --color-primary: #0199FC;
-  --color-primary-dark: #0077C8;
-  --color-primary-light: #48B4FF;
-  
-  --color-secondary: #0F172A;
-  --color-secondary-light: #1E293B;
-  
-  --color-accent: #F59E0B;
-  --color-accent-dark: #D97706;
-  
+  --color-primary: #0199fc;
+  --color-primary-dark: #0077c8;
+  --color-primary-light: #48b4ff;
+
+  --color-secondary: #0f172a;
+  --color-secondary-light: #1e293b;
+
+  --color-accent: #f59e0b;
+  --color-accent-dark: #d97706;
+
   /* Neutral / Steel Colors */
-  --color-background: #FFFFFF;
-  --color-foreground: #0F172A;
-  --color-muted: #64748B;
-  --color-muted-light: #94A3B8;
-  --color-border: #E2E8F0;
-  --color-surface: #F8FAF7;
+  --color-background: #ffffff;
+  --color-foreground: #0f172a;
+  --color-muted: #64748b;
+  --color-muted-light: #94a3b8;
+  --color-border: #e2e8f0;
+  --color-surface: #f8faf7;
   --color-steel: #475569;
-  
+
   /* Semantic Colors */
-  --color-success: #10B981;
-  --color-warning: #F59E0B;
-  --color-error: #EF4444;
-  --color-info: #3B82F6;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
 
   /* Fonts */
-  --font-inter: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-playfair: "Playfair Display", ui-serif, Georgia, serif;
+  --font-outfit: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-sora: "Sora", sans-serif;
 }
 
 @layer base {
@@ -40,7 +40,7 @@
   }
 
   body {
-    @apply bg-background text-foreground font-inter antialiased;
+    @apply bg-background text-foreground font-outfit antialiased;
   }
 
   /* Custom Scrollbar */
@@ -53,7 +53,7 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #0199FC;
+    background: #0199fc;
     border-radius: 10px;
   }
 
@@ -61,5 +61,3 @@
     background: #33adff;
   }
 }
-
-

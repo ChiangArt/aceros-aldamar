@@ -42,7 +42,7 @@ export function ImageSection({
           data-reveal
         >
           <Badge>{badge}</Badge>
-          <h2 className="font-playfair text-4xl md:text-6xl font-bold text-white mt-6 leading-[1.1] tracking-tight">
+          <h2 className="font-sora text-4xl md:text-6xl font-bold text-white mt-6 leading-[1.1] tracking-tight">
             {title}
           </h2>
           {subtitle && (

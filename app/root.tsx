@@ -5,7 +5,6 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLocation,
 } from "react-router";
 import { Navbar } from "~/components/layout/Navbar";
 import { Footer } from "~/components/layout/Footer";
@@ -13,43 +12,18 @@ import { WhatsAppButton } from "~/components/WhatsAppButton";
 import { ScrollProgress } from "~/components/ui/ScrollProgress";
 import appStyles from "./app.css?url";
 import type { Route } from "./+types/root";
-import { catalogCategories, catalogProducts } from "~/lib/catalog";
-
 
 export const meta: Route.MetaFunction = ({ location }) => {
   const pathname = location.pathname.replace(/\/$/, "") || "/";
   const canonical = `https://acerosaldamar.com${pathname === "/" ? "" : pathname}`;
 
-  let title = "Aceros Aldamar";
-  let description = "Venta de aceros y materiales de construcción en Perú.";
-
-  if (pathname.startsWith("/productos/")) {
-    const slug = pathname.split("/productos/")[1];
-    const category = catalogCategories.find((c) => c.id === slug);
-    const name = category ? category.name : slug.replace(/-/g, " ");
-    title = `${name} — Catálogo de Productos | Aceros Aldamar`;
-    description = `Explora nuestra variedad de ${name.toLowerCase()}. Calidad certificada y entrega inmediata en Aceros Aldamar.`;
-  }
-
-  if (pathname.startsWith("/producto/")) {
-    const slug = pathname.split("/producto/")[1];
-    const product = catalogProducts.find((p) => p.id === slug);
-    const name = product ? product.name : slug.replace(/-/g, " ");
-    title = `${name} | Aceros Aldamar`;
-    description = product
-      ? product.shortDescription
-      : `Compra ${name} en Perú. Calidad garantizada en Aceros Aldamar.`;
-  }
-
-  if (pathname === "/productos") {
-    title = "Productos de acero en Perú | Aceros Aldamar";
-    description = "Catálogo de productos de acero para construcción e industria.";
-  }
-
   return [
-    { title },
-    { name: "description", content: description },
-
+    { title: "Aceros Aldamar | Calidad y Compromiso" },
+    {
+      name: "description",
+      content:
+        "Distribución de aceros y derivados para construcción, industria y minería en Perú.",
+    },
     {
       tagName: "link",
       rel: "canonical",
@@ -70,11 +44,11 @@ export const links: Route.LinksFunction = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Sora:wght@100..800&display=swap",
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap",
   },
 ];
 
@@ -125,21 +99,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              "name": "Aceros Aldamar",
-              "url": "https://acerosaldamar.com",
-              "logo": "https://acerosaldamar.com/logo.ico",
-              "contactPoint": {
+              name: "Aceros Aldamar",
+              url: "https://acerosaldamar.com",
+              logo: "https://acerosaldamar.com/logo.ico",
+              contactPoint: {
                 "@type": "ContactPoint",
-                "telephone": "+51 991 047 687",
-                "contactType": "ventas",
-                "areaServed": "PE",
-                "availableLanguage": "Spanish"
+                telephone: "+51 991 047 687",
+                contactType: "ventas",
+                areaServed: "PE",
+                availableLanguage: "Spanish",
               },
-              "sameAs": [
+              sameAs: [
                 "https://www.facebook.com/profile.php?id=61589205562427",
                 "https://www.instagram.com/acerosaldamar",
-                "https://www.linkedin.com/company/acerosaldamar"
-              ]
+                "https://www.linkedin.com/company/acerosaldamar",
+              ],
             }),
           }}
         />
@@ -149,19 +123,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
-              "url": "https://acerosaldamar.com",
-              "potentialAction": {
+              url: "https://acerosaldamar.com",
+              potentialAction: {
                 "@type": "SearchAction",
-                "target": "https://acerosaldamar.com/productos?q={search_term_string}",
-                "query-input": "required name=search_term_string"
-              }
+                target:
+                  "https://acerosaldamar.com/productos?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+              },
             }),
           }}
         />
         <Meta />
         <Links />
       </head>
-      <body className="bg-[#050505] text-neutral-200 font-inter overflow-x-hidden">
+      <body className="bg-[#050505] text-neutral-200 font-outfit overflow-x-hidden">
         <ScrollProgress />
         <Navbar />
         {children}

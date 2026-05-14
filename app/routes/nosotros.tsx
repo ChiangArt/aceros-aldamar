@@ -7,15 +7,23 @@ import { ImageSection } from "~/features/about/components/ImageSection";
 import type { Route } from "./+types/nosotros";
 
 export function meta({}: Route.MetaArgs) {
+  const title = "Sobre Nosotros | Aceros Aldamar";
+  const desc = "Conoce nuestra historia, misión y compromiso con la calidad en el sector siderúrgico. Aceros Aldamar, tu aliado estratégico en cada proyecto.";
+  const url = "https://acerosaldamar.com/nosotros";
+  const image = "https://acerosaldamar.com/og-image.png";
+
   return [
-    { title: "Sobre Nosotros — ACEROS ALDAMAR" },
-    {
-      name: "description",
-      content:
-        "Conoce nuestra historia, misión y compromiso con la calidad en el sector siderúrgico. Aceros Aldamar, tu aliado estratégico.",
-    },
-    { property: "og:title", content: "Sobre Nosotros — ACEROS ALDAMAR" },
-    { property: "og:description", content: "Conoce nuestra historia y compromiso con la calidad." },
+    { title },
+    { name: "description", content: desc },
+    { property: "og:title", content: title },
+    { property: "og:description", content: desc },
+    { property: "og:image", content: image },
+    { property: "og:url", content: url },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: desc },
+    { name: "twitter:image", content: image },
   ];
 }
 

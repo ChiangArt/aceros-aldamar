@@ -26,15 +26,15 @@ export function CTA() {
 
           <div className="relative z-10 border border-white/10 rounded-3xl p-10 md:p-16 text-center">
             <Badge>¿Listo para empezar?</Badge>
-            <h2 className="font-playfair text-3xl md:text-5xl font-bold tracking-tight text-white mb-5 mt-3">
+            <h2 className="font-sora text-3xl md:text-5xl font-bold tracking-tight text-white mb-5 mt-3">
               Solicita tu{" "}
               <span className="bg-gradient-to-br from-primary via-[#33adff] to-[#99d6ff] bg-clip-text text-transparent">
                 Cotización
               </span>
             </h2>
             <p className="text-neutral-400 text-base font-light max-w-lg mx-auto mb-8 leading-relaxed">
-              Nuestro equipo de asesores técnicos está listo para ayudarte a encontrar la solución
-              en acero perfecta.
+              Nuestro equipo de asesores técnicos está listo para ayudarte a
+              encontrar la solución en acero perfecta.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
