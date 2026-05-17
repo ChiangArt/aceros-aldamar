@@ -14,5 +14,5 @@ while ((match = regex.exec(content)) !== null) {
 }
 
 console.log('Found IDs:', ids.length);
-const urls = ids.map(id => `  <url>\n    <loc>https://acerosaldamar.com/productos/${id}</loc>\n    <priority>0.7</priority>\n  </url>`).join('\n');
+const urls = ids.map(id => `  <url>\n    <loc>https://acerosaldamar.com/producto/${id}</loc>\n    <priority>0.7</priority>\n  </url>`).join('\n');
 console.log(urls);

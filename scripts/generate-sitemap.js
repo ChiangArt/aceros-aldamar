@@ -1,113 +1,60 @@
 import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-function slug(input) {
-  return input
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const SITE_URL = "https://acerosaldamar.com";
+
+const catalogPath = path.resolve(__dirname, '../app/lib/catalog.ts');
+const content = fs.readFileSync(catalogPath, 'utf-8');
+
+// Regex to match category items (from catalogCategories)
+// We look for objects with id: "something" inside catalogCategories array
+// A simpler way: we know the exact categories.
+const categories = [
+  'construccion',
+  'tubos-con-costura',
+  'perfiles',
+  'ejes',
+  'planchas-lac',
+  'planchas-especiales',
+  'bobinas-y-planchas',
+  'tubos-sin-costura'
+];
+
+// Regex to find all `id: "some-id"`
+const idRegex = /id:\s*['"]([^'"]+)['"]/g;
+const ids = new Set();
+let match;
+
+while ((match = idRegex.exec(content)) !== null) {
+  ids.add(match[1]);
 }
 
-const categories = [
-  "construccion",
-  "ejes",
-  "perfiles",
-  "tubos-con-costura",
-  "tubos-sin-costura",
-  "planchas-lac",
-  "planchas-especiales",
-  "bobinas-y-planchas"
-];
+// Separate products from categories
+const products = [...ids].filter(id => !categories.includes(id));
 
-const products = [
-  { category: "construccion", name: "Barras de construcción BINORMA" },
-  { category: "construccion", name: "Alambrón para Trefilería - SAE 1006" },
-  { category: "construccion", name: "Alambre Negro Recocido" },
-  { category: "construccion", name: "Calaminas natural" },
-  { category: "construccion", name: "Calaminas prepintadas" },
-  { category: "construccion", name: "Coberturas Aluzinc" },
-  { category: "construccion", name: "Clavos para albañileria" },
-  { category: "construccion", name: "Clavos para calamina" },
-  { category: "ejes", name: "Barras redondas calibradas 1018 / 1045" },
-  { category: "ejes", name: "Barras redondas lisas 1018 / 1020" },
-  { category: "ejes", name: "Barras redondas lisas 1045" },
-  { category: "ejes", name: "AISI 4140 LAC / AISI 4140 BONIFICADO (QT)" },
-  { category: "ejes", name: "Barras perforadas SAE 1020" },
-  { category: "perfiles", name: "Barras redondas lisas A36" },
-  { category: "perfiles", name: "Barras cuadradas lisas A36" },
-  { category: "perfiles", name: "Ángulos LAC A36" },
-  { category: "perfiles", name: "ASTM A36 / A572 GR 50 (Dual)" },
-  { category: "perfiles", name: "Platinas LAC A36" },
-  { category: "perfiles", name: "Tee LAC A36" },
-  { category: "perfiles", name: "Rieles" },
-  { category: "perfiles", name: "Canal U" },
-  { category: "perfiles", name: "Vigas H" },
-  { category: "tubos-con-costura", name: "Tubos redondos negros LAC" },
-  { category: "tubos-con-costura", name: "Tubos cuadrados negros LAC" },
-  { category: "tubos-con-costura", name: "Tubos rectangulares negros LAC" },
-  { category: "tubos-con-costura", name: "Tubos redondos galvanizados" },
-  { category: "tubos-con-costura", name: "Tubos cuadrados galvanizados" },
-  { category: "tubos-con-costura", name: "Tubos laminados en frío (A513)" },
-  { category: "tubos-sin-costura", name: "Tubos Schedule (SCH 40/80/160)" },
-  { category: "tubos-sin-costura", name: "Tubos para calderas A192" },
-  { category: "planchas-lac", name: "Planchas LAC A36" },
-  { category: "planchas-lac", name: "Plancha estriada (Lágrima)" },
-  { category: "planchas-especiales", name: "Planchas para calderas y tanques" },
-  { category: "planchas-especiales", name: "Planchas antiabrasivas Mirohard" },
-  { category: "planchas-especiales", name: "Planchas expandidas" },
-  { category: "bobinas-y-planchas", name: "Laminadas en frío (LAF)" },
-  { category: "bobinas-y-planchas", name: "Planchas y bobinas galvanizadas" },
-  { category: "bobinas-y-planchas", name: "Bobinas de Aluzinc (AZ 55%)" },
-];
+const staticRoutes = ["", "/nosotros", "/contacto", "/productos"];
+const categoryRoutes = categories.map(c => `/productos/${c}`);
+const productRoutes = products.map(p => `/producto/${p}`);
 
-const baseUrl = "https://acerosaldamar.com";
-const today = new Date().toISOString().split('T')[0];
+const allRoutes = [...staticRoutes, ...categoryRoutes, ...productRoutes];
 
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Main Pages -->
-  <url>
-    <loc>${baseUrl}/</loc>
-    <lastmod>${today}</lastmod>
-    <priority>1.0</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>${baseUrl}/nosotros</loc>
-    <lastmod>${today}</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/productos</loc>
-    <lastmod>${today}</lastmod>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/contacto</loc>
-    <lastmod>${today}</lastmod>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Categories -->
-${categories.map(cat => `  <url>
-    <loc>${baseUrl}/productos/${cat}</loc>
-    <lastmod>${today}</lastmod>
-    <priority>0.7</priority>
-  </url>`).join('\n')}
-
-  <!-- Products -->
-${products.map(p => {
-  const id = slug(`${p.category}-${p.name}`);
-  return `  <url>
-    <loc>${baseUrl}/producto/${id}</loc>
-    <lastmod>${today}</lastmod>
-    <priority>0.6</priority>
+${allRoutes
+  .map((route) => {
+    return `  <url>
+    <loc>${SITE_URL}${route}</loc>
+    <priority>${route === "" ? "1.0" : route.startsWith("/producto/") ? "0.7" : "0.8"}</priority>
   </url>`;
-}).join('\n')}
+  })
+  .join("\n")}
 </urlset>
 `;
 
-fs.writeFileSync('./public/sitemap.xml', sitemap);
-console.log('Sitemap generated successfully in ./public/sitemap.xml');
+const outPath = path.resolve(__dirname, '../build/client/sitemap.xml');
+fs.writeFileSync(outPath, sitemapContent, 'utf8');
+console.log(`✅ Sitemap generated with ${allRoutes.length} URLs at ${outPath}`);
