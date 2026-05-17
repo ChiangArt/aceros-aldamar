@@ -9,7 +9,7 @@ interface Props {
 export function ProductGrid({ products }: Props) {
   if (products.length === 0) {
     return (
-      <div className="rounded-3xl border border-white/5 bg-neutral-900/35 p-16 text-center">
+      <div className="rounded-md border border-white/5 bg-neutral-900/35 p-16 text-center">
         <div className="w-16 h-16 rounded-full bg-white/[.02] border border-white/5 flex items-center justify-center mx-auto mb-6">
           <IoSearchOutline size={32} className="text-primary" />
         </div>

@@ -7,7 +7,7 @@ export function SectionTitle({
 }: PropsWithChildren<{ sub?: string; center?: boolean }>) {
   return (
     <div className={center ? "text-center" : undefined}>
-      <h2 className="font-sora text-4xl md:text-5xl lg:text-[3.5rem] font-bold tracking-tight text-white leading-[1.05] mb-4">
+      <h2 className="font-inter text-4xl md:text-5xl lg:text-[3.5rem] font-bold tracking-tight text-white leading-[1.05] mb-4">
         {children}
       </h2>
       {sub ? (

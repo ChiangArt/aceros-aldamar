@@ -74,14 +74,14 @@ export function Hero() {
 
         <AnimatedTitle
           text="Impulsamos tus"
-          className="font-sora text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight leading-[.92] text-white mb-2"
+          className="font-inter text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight leading-[.92] text-white mb-2"
           charClassName="text-white"
           delayMs={400}
           as="h1"
         />
         <AnimatedTitle
           text="proyectos"
-          className="font-sora text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight leading-[.92] mb-8 "
+          className="font-inter text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight leading-[.92] mb-8 "
           charClassName="bg-gradient-to-br from-primary via-[#33adff] to-[#99d6ff] bg-clip-text text-transparent"
           delayMs={900}
           as="h1"

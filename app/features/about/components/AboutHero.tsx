@@ -22,7 +22,7 @@ export function AboutHero() {
           data-reveal
         >
           <Badge>Empresa</Badge>
-          <h1 className="font-sora text-5xl md:text-8xl font-bold text-white mt-6 mb-8 leading-[1.05] tracking-tighter">
+          <h1 className="font-inter text-5xl md:text-8xl font-bold text-white mt-6 mb-8 leading-[1.05] tracking-tighter">
             Calidad, respaldo y cumplimiento <br />
             <span className="bg-gradient-to-br from-primary via-[#33adff] to-[#99d6ff] bg-clip-text text-transparent">
               ACEROS ALDAMAR
@@ -37,15 +37,7 @@ export function AboutHero() {
         </div>
       </div>
 
-      <div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 text-neutral-500 opacity-50"
-        style={{ transform: `translate(-50%, ${py * 0.5}px)` }}
-      >
-        <span className="text-[10px] font-bold uppercase tracking-[.4em]">
-          Scroll
-        </span>
-        <div className="w-[1px] h-12 bg-gradient-to-b from-primary to-transparent" />
-      </div>
+      
     </section>
   );
 }

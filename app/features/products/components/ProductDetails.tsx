@@ -25,6 +25,40 @@ function mailtoFor(productName: string) {
 export function ProductDetails({ product, related }: Props) {
   const category = getCategoryById(product.categoryId);
 
+  // Filter out weight-related technical specs
+  const filteredTechnical = (product.technical ?? []).filter(
+    (t) => !t.toLowerCase().includes("peso") && !t.toLowerCase().includes("kg/"),
+  );
+
+  // Filter out weight-related presentation details
+  const filteredPresentation = product.presentation.filter(
+    (t) => !t.toLowerCase().includes("peso") && !t.toLowerCase().includes("kg/"),
+  );
+
+  // Filter dimension tables and columns
+  const filteredDimensions = product.dimensions
+    .filter((table) => !table.title.toLowerCase().includes("peso"))
+    .map((table) => {
+      const pesoIndices = table.columns.reduce((acc, col, idx) => {
+        const c = col.toLowerCase();
+        if (c.includes("peso") || c.includes("kg/") || c === "kg/6m" || c === "kg/m") {
+          acc.push(idx);
+        }
+        return acc;
+      }, [] as number[]);
+
+      if (pesoIndices.length === 0) return table;
+
+      return {
+        ...table,
+        columns: table.columns.filter((_, idx) => !pesoIndices.includes(idx)),
+        rows: table.rows.map((row) =>
+          row.filter((_, idx) => !pesoIndices.includes(idx)),
+        ),
+      };
+    })
+    .filter((table) => table.columns.length > 0);
+
   return (
     <div className="max-w-7xl mx-auto px-6">
       {/* Breadcrumbs */}
@@ -63,7 +97,7 @@ export function ProductDetails({ product, related }: Props) {
       <div className="grid lg:grid-cols-12 gap-10">
         {/* Left Col: Image and Main Info */}
         <div className="lg:col-span-6">
-          <div className="rounded-3xl overflow-hidden border border-white/5 bg-neutral-900/35">
+          <div className="rounded-md overflow-hidden border border-white/5 bg-neutral-900/35">
             <div className="relative aspect-[4/3] overflow-hidden">
               <img
                 src={product.image}
@@ -89,7 +123,7 @@ export function ProductDetails({ product, related }: Props) {
                 <a
                   href={mailtoFor(product.name)}
                   data-hover
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white/[.06] border border-white/10 text-sm font-semibold text-white hover:border-primary/25 hover:bg-white/[.08] transition-all"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-sm bg-white/[.06] border border-white/10 text-sm font-semibold text-white hover:border-primary/25 hover:bg-white/[.08] transition-all"
                 >
                   <Icon name="download" size={16} className="text-primary" />
                   Descargar ficha técnica
@@ -97,7 +131,7 @@ export function ProductDetails({ product, related }: Props) {
                 <Link
                   to={`/contacto?producto=${encodeURIComponent(product.id)}`}
                   data-hover
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-primary to-[#99d6ff] text-sm font-semibold text-white hover:shadow-lg hover:shadow-primary/20 active:scale-[.98] transition-all"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-sm bg-gradient-to-r from-primary to-[#99d6ff] text-sm font-semibold text-white hover:shadow-lg hover:shadow-primary/20 active:scale-[.98] transition-all"
                 >
                   Cotizar
                   <Icon name="arrow-right" size={16} />
@@ -109,12 +143,12 @@ export function ProductDetails({ product, related }: Props) {
 
         {/* Right Col: Technical Details */}
         <div className="lg:col-span-6 space-y-6">
-          <div className="rounded-3xl bg-neutral-900/35 border border-white/5 p-6 md:p-8">
+          <div className="rounded-md bg-neutral-900/35 border border-white/5 p-6 md:p-8">
             <p className="text-[10px] font-bold text-neutral-300 uppercase tracking-[.2em] mb-4">
               Características técnicas
             </p>
             <ul className="space-y-2 text-sm text-neutral-400 font-light">
-              {(product.technical ?? []).map((t) => (
+              {filteredTechnical.map((t) => (
                 <li key={t} className="flex gap-2">
                   <span className="text-primary mt-[2px]">•</span>
                   <span>{t}</span>
@@ -141,12 +175,12 @@ export function ProductDetails({ product, related }: Props) {
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-3xl bg-neutral-900/35 border border-white/5 p-6">
+            <div className="rounded-md bg-neutral-900/35 border border-white/5 p-6">
               <p className="text-[10px] font-bold text-neutral-300 uppercase tracking-[.2em] mb-4">
                 Presentación
               </p>
               <ul className="space-y-2 text-sm text-neutral-400 font-light">
-                {product.presentation.map((t) => (
+                {filteredPresentation.map((t) => (
                   <li key={t} className="flex gap-2">
                     <span className="text-primary mt-[2px]">•</span>
                     <span>{t}</span>
@@ -154,7 +188,7 @@ export function ProductDetails({ product, related }: Props) {
                 ))}
               </ul>
             </div>
-            <div className="rounded-3xl bg-neutral-900/35 border border-white/5 p-6">
+            <div className="rounded-md bg-neutral-900/35 border border-white/5 p-6">
               <p className="text-[10px] font-bold text-neutral-300 uppercase tracking-[.2em] mb-4">
                 Usos
               </p>
@@ -170,10 +204,10 @@ export function ProductDetails({ product, related }: Props) {
           </div>
 
           {/* Rendering multiple tables */}
-          {product.dimensions.map((table, idx) => (
+          {filteredDimensions.map((table, idx) => (
             <div
               key={idx}
-              className="rounded-3xl bg-neutral-900/35 border border-white/5 p-6 md:p-8"
+              className="rounded-md bg-neutral-900/35 border border-white/5 p-6 md:p-8"
             >
               <div className="mb-5">
                 <p className="text-[10px] font-bold text-neutral-300 uppercase tracking-[.2em] mb-2">
@@ -188,13 +222,13 @@ export function ProductDetails({ product, related }: Props) {
                   </p>
                 )}
               </div>
-              <div className="overflow-x-auto rounded-2xl border border-white/5">
+              <div className="overflow-x-auto rounded-md border border-white/5">
                 <table className="min-w-full text-left text-sm">
                   <thead className="bg-white/[.03]">
                     <tr>
-                      {table.columns.map((c) => (
+                      {table.columns.map((c, cIdx) => (
                         <th
-                          key={c}
+                          key={`${c}-${cIdx}`}
                           className="px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-neutral-400"
                         >
                           {c}
@@ -223,13 +257,14 @@ export function ProductDetails({ product, related }: Props) {
         </div>
       </div>
 
+
       {/* Related Products */}
       {related.length > 0 && (
         <section className="mt-16">
           <div className="flex items-end justify-between gap-6 mb-8">
             <div>
               <Badge>Más en {category?.name ?? "esta familia"}</Badge>
-              <h2 className="font-sora text-2xl md:text-3xl font-bold tracking-tight text-white mt-3">
+              <h2 className="font-inter text-2xl md:text-3xl font-bold tracking-tight text-white mt-3">
                 Productos relacionados
               </h2>
             </div>
@@ -249,7 +284,7 @@ export function ProductDetails({ product, related }: Props) {
                 key={rp.id}
                 to={`/producto/${rp.id}`}
                 data-hover
-                className="rounded-2xl overflow-hidden bg-neutral-900/40 border border-white/5 hover:border-primary/25 transition-all duration-300 group"
+                className="rounded-md overflow-hidden bg-neutral-900/40 border border-white/5 hover:border-primary/25 transition-all duration-300 group"
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <img

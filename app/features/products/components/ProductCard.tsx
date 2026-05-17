@@ -13,7 +13,7 @@ export function ProductCard({ product }: Props) {
     <Link
       to={`/producto/${product.id}`}
       data-hover
-      className="rounded-2xl overflow-hidden bg-neutral-900/40 border border-white/5 hover:border-primary/40 hover:shadow-[0_30px_90px_rgba(0,0,0,0.6)] cursor-pointer transition-all duration-300 ease-out group block"
+      className="rounded-md overflow-hidden bg-neutral-900/40 border border-white/5 hover:border-primary/40 hover:shadow-[0_30px_90px_rgba(0,0,0,0.6)] cursor-pointer transition-all duration-300 ease-out group block"
     >
       <div className="relative aspect-[4/3] overflow-hidden">
         <img

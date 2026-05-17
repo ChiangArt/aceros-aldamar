@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Divider } from "~/components/ui/Divider";
 import { useCountUp } from "~/features/shared/hooks";
-import { useScrollY } from "~/features/shared/hooks";
 import Logo from "~/components/ui/Logo";
 
 function StatItem({
@@ -20,7 +18,7 @@ function StatItem({
   return (
     <div
       className={[
-        "text-center opacity-0 translate-y-14 transition-[opacity,transform] duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]",
+        "text-left opacity-0 -translate-x-20 transition-[opacity,transform] duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]",
         delay === 0
           ? ""
           : delay === 1
@@ -32,13 +30,13 @@ function StatItem({
       data-reveal
       ref={ref}
     >
-      <p className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tabular-nums mb-2">
+      <p className="text-4xl md:text-5xl lg:text-7xl font-bold text-white tabular-nums mb-1">
         {current}
-        <span className="bg-gradient-to-br from-[#0199FC] via-[#33adff] to-[#99d6ff] bg-clip-text text-transparent">
+        <span className="bg-gradient-to-br from-primary via-[#33adff] to-[#99d6ff] bg-clip-text text-transparent">
           {suffix}
         </span>
       </p>
-      <p className="text-xs md:text-sm text-neutral-500 font-medium uppercase tracking-wider">
+      <p className="text-xs md:text-sm text-neutral-500 font-medium uppercase tracking-[0.2em]">
         {label}
       </p>
     </div>
@@ -46,22 +44,6 @@ function StatItem({
 }
 
 export function Stats() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const scrollY = useScrollY();
-  const [mounted, setMounted] = useState(false);
-  const [offsetTop, setOffsetTop] = useState(0);
-
-  useEffect(() => {
-    setMounted(true);
-    if (sectionRef.current) {
-      setOffsetTop(sectionRef.current.offsetTop);
-    }
-  }, []);
-
-  // Calculate parallax relative to section top
-  // When scrollY is at the section top, py is 0
-  const py = mounted ? (scrollY - offsetTop) * -0.15 : 0;
-
   const stats = [
     { value: 5000, suffix: "+", label: "Proyectos completados" },
     { value: 120, suffix: "K", label: "Toneladas anuales" },
@@ -69,39 +51,40 @@ export function Stats() {
   ];
 
   return (
-    <section ref={sectionRef} className="py-24 relative overflow-hidden">
-      <Divider />
-      <div className="max-w-7xl mx-auto px-6 py-20 relative">
-        <div
-          className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
-        >
+    <section className="py-24 md:py-40 relative overflow-hidden">
+      <div className="max-w-6xl mx-auto px-6 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-center">
+          {/* Stats Column */}
+          <div className="flex flex-col gap-10 md:gap-14 lg:pl-12">
+            {stats.map((s, i) => (
+              <StatItem
+                key={s.label}
+                value={s.value}
+                suffix={s.suffix}
+                label={s.label}
+                delay={i}
+              />
+            ))}
+          </div>
+
+          {/* Logo Column */}
           <div 
-            className="transition-transform duration-700 ease-out will-change-transform"
-            style={{
-              transform: `translateY(${py}px)`,
-              opacity: mounted ? 1 : 0,
-            }}
+            className="hidden lg:flex justify-center lg:justify-start opacity-0 translate-x-20 transition-[opacity,transform] duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] delay-300"
+            data-reveal
           >
-            <Logo 
-              size="min(60vw, 400px)" 
-              color="text-primary/30" 
-            />
+            <div className="relative">
+              <div className="absolute -inset-20 bg-primary/10 blur-[120px] rounded-full" />
+              <Logo 
+                size="clamp(300px, 25vw, 450px)" 
+                color="text-primary/20" 
+              />
+            </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 relative z-10">
-          {stats.map((s, i) => (
-            <StatItem
-              key={s.label}
-              value={s.value}
-              suffix={s.suffix}
-              label={s.label}
-              delay={i}
-            />
-          ))}
-        </div>
       </div>
-      <Divider />
     </section>
   );
 }
+
+
 

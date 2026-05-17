@@ -79,7 +79,7 @@ export function ProductCatalog() {
             placeholder="Buscar producto..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-11 pr-4 py-3 rounded-2xl bg-white/[.03] border border-white/5 focus:border-primary/30 focus:bg-white/[.05] text-sm text-white placeholder-neutral-600 transition-all outline-none"
+            className="w-full pl-11 pr-4 py-3 rounded-sm bg-white/[.03] border border-white/5 focus:border-primary/30 focus:bg-white/[.05] text-sm text-white placeholder-neutral-600 transition-all outline-none"
           />
         </div>
       </div>
@@ -88,7 +88,7 @@ export function ProductCatalog() {
         <button
           onClick={() => setCategory("all")}
           className={cn(
-            "px-5 py-2 rounded-xl text-xs font-semibold transition-all border",
+            "px-5 py-2 rounded-sm text-xs font-semibold transition-all border",
             activeCategory === "all"
               ? "bg-primary border-primary text-white shadow-lg shadow-primary/20"
               : "bg-white/[.03] border-white/5 text-neutral-400 hover:border-white/10 hover:text-white",
@@ -102,7 +102,7 @@ export function ProductCatalog() {
             key={c.id}
             onClick={() => setCategory(c.id)}
             className={cn(
-              "px-5 py-2 rounded-xl text-xs font-semibold transition-all border",
+              "px-5 py-2 rounded-sm text-xs font-semibold transition-all border",
               activeCategory === c.id
                 ? "bg-primary border-primary text-white shadow-lg shadow-primary/20"
                 : "bg-white/[.03] border-white/5 text-neutral-400 hover:border-white/10 hover:text-white",

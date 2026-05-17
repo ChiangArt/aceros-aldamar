@@ -35,13 +35,19 @@ export function Navbar() {
       )}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16 md:h-20 relative">
-        <Link to="/" className="flex items-center  cursor-pointer" data-hover>
-          <Logo size={40} color="text-primary"/>
+        <Link
+          to="/"
+          className="flex items-center justify-center cursor-pointer"
+          data-hover
+        >
           <div>
-            <span className="text-sm md:text-base font-bold text-white tracking-tight">
-              CEROS
+            <Logo size={40} color="text-primary" offsetY={20} />
+          </div>
+          <div className="flex flex-col ml-2 leading-none">
+            <span className="text-base md:text-lg font-black text-white tracking-[0.15em]">
+              ACEROS
             </span>
-            <span className="text-sm md:text-base font-light text-primary ml-1">
+            <span className="text-[10px] md:text-[11px] font-bold text-primary tracking-[0.4em] -mt-0.5">
               ALDAMAR
             </span>
           </div>
@@ -68,7 +74,7 @@ export function Navbar() {
         <Link
           to="/contacto"
           data-hover
-          className="hidden lg:block px-5 py-2 rounded-xl bg-gradient-to-r from-primary to-[#99d6ff] text-[13px] font-semibold text-white hover:shadow-lg hover:shadow-primary/20 active:scale-95"
+          className="hidden lg:block px-5 py-2 rounded-sm bg-gradient-to-r from-primary to-[#99d6ff] text-[13px] font-semibold text-white hover:shadow-lg hover:shadow-primary/20 active:scale-95"
         >
           Cotizar
         </Link>
@@ -105,7 +111,7 @@ export function Navbar() {
                 to="/contacto"
                 data-hover
                 onClick={() => setOpen(false)}
-                className="mt-2 w-full py-3 px-2 rounded-xl bg-gradient-to-r from-primary to-[#99d6ff] text-sm font-semibold text-white"
+                className="mt-2 w-full py-3 px-2 rounded-sm bg-gradient-to-r from-primary to-[#99d6ff] text-sm font-semibold text-white"
               >
                 Cotizar
               </Link>

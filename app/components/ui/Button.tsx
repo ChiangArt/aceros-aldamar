@@ -26,12 +26,16 @@ export function Button({
   disabled,
   ...props
 }: ButtonProps) {
-  const baseStyles = "relative inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 active:scale-[.98] disabled:opacity-50 disabled:pointer-events-none rounded-xl overflow-hidden group cursor-hover";
-  
+  const baseStyles =
+    "relative inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 active:scale-[.98] disabled:opacity-50 disabled:pointer-events-none rounded-sm overflow-hidden group cursor-hover";
+
   const variants = {
-    primary: "bg-gradient-to-r from-primary to-[#99d6ff] text-white hover:shadow-lg hover:shadow-primary/20",
-    secondary: "bg-white/[.04] border border-white/10 text-white hover:bg-white/[.08] hover:border-white/20",
-    outline: "border-2 border-primary text-primary hover:bg-primary hover:text-white",
+    primary:
+      "bg-gradient-to-r from-primary to-[#99d6ff] text-white hover:shadow-lg hover:shadow-primary/20",
+    secondary:
+      "bg-white/[.04] border border-white/10 text-white hover:bg-white/[.08] hover:border-white/20",
+    outline:
+      "border-2 border-primary text-primary hover:bg-primary hover:text-white",
     ghost: "text-neutral-400 hover:text-white hover:bg-white/[.05]",
   };
 
@@ -43,10 +47,16 @@ export function Button({
 
   const content = (
     <>
-      <div className={`flex items-center justify-center gap-2 transition-opacity duration-300 ${isLoading ? "opacity-0" : "opacity-100"}`}>
-        {icon && iconPosition === "left" && <Icon name={icon} size={size === "sm" ? 14 : 18} />}
+      <div
+        className={`flex items-center justify-center gap-2 transition-opacity duration-300 ${isLoading ? "opacity-0" : "opacity-100"}`}
+      >
+        {icon && iconPosition === "left" && (
+          <Icon name={icon} size={size === "sm" ? 14 : 18} />
+        )}
         {children}
-        {icon && iconPosition === "right" && <Icon name={icon} size={size === "sm" ? 14 : 18} />}
+        {icon && iconPosition === "right" && (
+          <Icon name={icon} size={size === "sm" ? 14 : 18} />
+        )}
       </div>
 
       {isLoading && (
@@ -54,7 +64,7 @@ export function Button({
           <LottieLoader size={50} className="brightness-0 invert" />
         </div>
       )}
-      
+
       {/* Glow Effect on Hover */}
       <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
     </>
@@ -71,7 +81,11 @@ export function Button({
   }
 
   return (
-    <button className={combinedClasses} disabled={disabled || isLoading} {...props}>
+    <button
+      className={combinedClasses}
+      disabled={disabled || isLoading}
+      {...props}
+    >
       {content}
     </button>
   );

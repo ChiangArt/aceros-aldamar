@@ -1,0 +1,2348 @@
+export type CatalogCategoryId =
+  | "construccion"
+  | "tubos-con-costura"
+  | "perfiles"
+  | "ejes"
+  | "planchas-lac"
+  | "planchas-especiales"
+  | "bobinas-y-planchas"
+  | "tubos-sin-costura";
+
+export type DimensionTable = {
+  title: string;
+  note?: string;
+  columns: string[];
+  rows: Array<Array<string | number>>;
+};
+
+export type CatalogProduct = {
+  id: string;
+  categoryId: CatalogCategoryId;
+  name: string;
+  shortDescription: string;
+  description: string;
+  technical?: string[];
+  presentation: string[];
+  uses: string[];
+  dimensions: DimensionTable[];
+  standards?: string[];
+  datasheet?: { label?: string; href: string } | null;
+  image: string;
+  imageHover: string;
+  tags?: string[];
+};
+
+export type CatalogCategory = {
+  id: CatalogCategoryId;
+  name: string;
+  description: string;
+  image: string;
+  imageHover: string;
+};
+
+function slug(input: string) {
+  return input
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+const hoverFallback = "/home.webp";
+
+export const catalogCategories: CatalogCategory[] = [
+  {
+    id: "construccion",
+    name: "Construcción",
+    description:
+      "Insumos y materiales para obra: acero corrugado, calaminas, coberturas y más.",
+    image: "/construccion.webp",
+    imageHover: hoverFallback,
+  },
+  {
+    id: "ejes",
+    name: "Ejes",
+    description:
+      "Barras redondas calibradas, lisas y perforadas en diversos grados (1018, 1045, 4140).",
+    image: "/ejes.webp",
+    imageHover: hoverFallback,
+  },
+  {
+    id: "perfiles",
+    name: "Perfiles",
+    description:
+      "Ángulos, canales, vigas, platinas y rieles para estructuras metálicas.",
+    image: "/perfiles.webp",
+    imageHover: hoverFallback,
+  },
+  {
+    id: "tubos-con-costura",
+    name: "Tubos con costura",
+    description:
+      "Tubos redondos, cuadrados y rectangulares, negros y galvanizados.",
+    image: "/tubos-con-costura.webp",
+    imageHover: hoverFallback,
+  },
+  {
+    id: "tubos-sin-costura",
+    name: "Tubos sin costura",
+    description:
+      "Tubería Schedule y para calderas, para alta presión y temperatura.",
+    image: "/tubos-sin-costura.webp",
+    imageHover: hoverFallback,
+  },
+  {
+    id: "planchas-lac",
+    name: "Planchas LAC",
+    description:
+      "Planchas laminadas en caliente, lisas y estriadas en diversos grados estructurales.",
+    image: "/plancha-lac.webp",
+    imageHover: hoverFallback,
+  },
+  {
+    id: "planchas-especiales",
+    name: "Planchas especiales",
+    description: "Planchas para calderas, tanques, antiabrasivas y expandidas.",
+    image: "/planchas-especiales.webp",
+    imageHover: hoverFallback,
+  },
+  {
+    id: "bobinas-y-planchas",
+    name: "Bobinas y planchas",
+    description: "Bobinas y planchas LAF, galvanizadas, prepintadas y aluzinc.",
+    image: "/bobinas-y-planchas.webp",
+    imageHover: hoverFallback,
+  },
+];
+
+function product(
+  params: Omit<CatalogProduct, "id" | "technical"> & {
+    id?: string;
+    technical?: string[];
+  },
+): CatalogProduct {
+  const id = params.id ?? slug(`${params.categoryId}-${params.name}`);
+  return { technical: [], ...params, id };
+}
+
+export const catalogProducts: CatalogProduct[] = [
+  // 1. CONSTRUCCIÓN
+  product({
+    categoryId: "construccion",
+    name: "Barras de construcción BINORMA",
+    shortDescription: "Barras corrugadas soldables de alta resistencia.",
+    description:
+      "Barras de acero corrugado soldables, fabricadas bajo estrictos controles de calidad. Cumplen dos normas simultáneamente (binorma): ASTM A615 GR 60 y ASTM A706 GR 60. Son dúctiles y resistentes, permitiendo ser soldadas con total garantía.",
+    standards: [
+      "NTP 341.031-2018 / ASTM A615 GR 60",
+      "NTP 339.186-2018 / ASTM A706 GR 60",
+      "RNE del Perú",
+      "Certificaciones: ISO 9001, 18001, 14001, 50001",
+    ],
+    technical: [
+      "Carbono (%) < 0.33",
+      "Carbono Equivalente (Ceq) < 0.55%",
+      "Relación Rt / Rf ≥ 1.25",
+      "Soldabilidad: Mayor control, recomendado usar AWS D1.4/D1.4M",
+    ],
+    presentation: ["Varillas de 9 m de largo", "Paquetes de 2 toneladas"],
+    uses: ["Refuerzo en edificaciones de concreto armado"],
+    dimensions: [
+      {
+        title: "Propiedades mecánicas",
+        columns: ["Propiedad", "Valor"],
+        rows: [
+          ["Límite de Fluencia mín (Rf)", "4200 kg/cm² (420 MPa)"],
+          ["Límite de Fluencia máx (Rf)", "5500 kg/cm² (540 MPa)"],
+          ["Resistencia a la Tracción mín (Rt)", "6320 kg/cm² (620 MPa)"],
+          ["Relación Rt / Rf", "≥ 1.25"],
+          ["Alargamiento mín en 200 mm", "14 %"],
+          ["Doblado a 180°", "Sin fisuras"],
+        ],
+      },
+      {
+        title: "Diámetro nominal y mandril de dobladora",
+        columns: ["Diámetro (in)", "Diámetro (mm)", "Ø Mandril (mm)"],
+        rows: [
+          ["-", "6", "18.0"],
+          ["-", "8", "24.0"],
+          ['3/8" (3/8)', "-", "28.5"],
+          ["-", "12", "36.0"],
+          ['1/2" (4/8)', "-", "38.0"],
+          ['5/8" (5/8)', "-", "47.6"],
+          ['3/4" (6/8)', "-", "76.0"],
+          ['1" (8/8)', "-", "102.0"],
+        ],
+      },
+      {
+        title: "Dimensiones nominales de barra corrugada",
+        columns: ["Diámetro", "Área (mm²)", "Perímetro (mm)", "Dist. resaltes (mm)", "Alt. resaltes (mm)", "Cuerda máx (mm)", ""],
+        rows: [[["6 mm", "28.0", "18.0", "4.2", "0.24", "2.35"]],
+          ["8 mm", "50.0", "25.1", "5.6", "0.32", "3.14", "0.395"],
+          ['3/8"', "71.0", "29.9", "6.7", "0.38", "3.6", "0.560"],
+          ["12 mm", "113.0", "37.7", "8.4", "0.48", "4.71", "0.888"],
+          ['1/2"', "129.0", "39.9", "8.9", "0.51", "4.9", "0.994"],
+          ['5/8"', "199.0", "49.9", "11.1", "0.71", "6.1", "1.552"],
+          ['3/4"', "284.0", "59.8", "13.3", "0.97", "7.3", "2.235"],
+          ['1"', "510.0", "79.8", "17.8", "1.27", "9.7", "3.973"],
+        ],
+        note: "Los valores entre paréntesis corresponden a la denominación según ASTM A615.",
+      },
+      {
+        title: "Composición química",
+        columns: ["Elemento", "Colada (%) máx.", "Producto (%) máx."],
+        rows: [
+          ["Carbono", "0.30", "0.33"],
+          ["Manganeso", "1.50", "1.56"],
+          ["Fósforo", "0.035", "0.043"],
+          ["Azufre", "0.045", "0.053"],
+          ["Silicio", "0.50", "0.55"],
+        ],
+      },
+      {
+        title: "Diferencia entre barras Binorma vs ASTM A615",
+        columns: ["Característica", "Barras Binorma A615/A706", "Barras ASTM A615"],
+        rows: [
+          ["Identificación", 'Palabra "SOLDABLE" en relieve', "No tiene la palabra SOLDABLE"],
+          ["Soldabilidad", "Excelente (carbono equiv. controlado)", "No se garantiza"],
+          ["Ductilidad", "Mayor (alargamiento mín. 14%)", "Menor (alargamiento mín. 9%)"],
+          ["Uso", "Zonas de alta sismicidad / soldadas", "Estructuras convencionales"],
+        ],
+      },
+    ],
+    image: "/products/barra-construccion-binorma-1.webp",
+    imageHover: "/products/barra-construccion-binorma-2.webp",
+  }),
+  product({
+    categoryId: "construccion",
+    name: "Alambrón para Trefilería - SAE 1006",
+    shortDescription: "Materia prima para trefilado y transformación.",
+    description:
+      "Acero laminado en caliente de sección circular y superficie lisa, utilizado como materia prima para procesos de trefilado.",
+    standards: ["SAE 1006"],
+    presentation: ["Bobinas de 2100 kg (± 200 kg) aprox."],
+    uses: [
+      "Fabricación por trefilación de alambres recocidos",
+      "Clavos",
+      "Alambre de púas",
+      "Mallas tejidas o electrosoldadas",
+      "Gaviones",
+    ],
+    technical: ["Material: SAE 1006"],
+    dimensions: [
+      {
+        title: "Dimensiones",
+        columns: ["Diámetro"],
+        rows: [["5.50 mm + 0.30 mm"]],
+      },
+    ],
+    image: "/products/alambron-trefileria-1.webp",
+    imageHover: "/products/alambron-trefileria-2.webp",
+  }),
+  product({
+    categoryId: "construccion",
+    name: "Alambre Negro Recocido",
+    shortDescription: "Alambre dúctil para amarre y atado.",
+    description:
+      "Alambre de acero de bajo carbono obtenido por trefilación y sometido a un tratamiento térmico de recocido para mejorar su ductilidad.",
+    standards: ["ASTM A853 / SAE 1006"],
+    presentation: ["Rollos de 100 kg"],
+    uses: ["Amarre en construcción", "Fardos", "Embalajes"],
+    technical: [
+      "Carbono (máx) 0.08%",
+      "Manganeso 0.30 - 0.50%",
+      "Fósforo (máx) 0.04%",
+      "Azufre (máx) 0.05%",
+    ],
+    dimensions: [
+      {
+        title: "Dimensiones",
+        columns: ["Denominación", "Calibre", "Diámetro (mm)"],
+        rows: [
+          ["Alambre N° 08", "Calibre 08", "4.19 ± 0.15"],
+          ["Alambre N° 16", "Calibre 16", "1.65 ± 0.04"],
+        ],
+      },
+      {
+        title: "Propiedades mecánicas",
+        columns: ["Propiedad", "Valor"],
+        rows: [["Resistencia a la Tracción (MPa) min", "343 - 442"]],
+      },
+    ],
+    image: "/products/alambre-negro-1.webp",
+    imageHover: "/products/alambre-negro-2.webp",
+  }),
+  product({
+    categoryId: "construccion",
+    name: "Calaminas natural",
+    shortDescription: "Plancha galvanizada acanalada para techos.",
+    description:
+      "Plancha de acero galvanizado por inmersión en caliente, acanalada en forma de ondas conformadas en frío. Producto nacional de alta calidad.",
+    standards: ["ASTM A653 TIPO B / JIS G 3302 / 94 SGCH"],
+    technical: ["Límite de Fluencia mín. 205 MPa", "Alargamiento 20%"],
+    presentation: ["Paquetes de 400 a 800 unidades"],
+    uses: ["Techos de edificaciones industriales, comerciales y residenciales"],
+    dimensions: [
+      {
+        title: "Dimensiones disponibles",
+        columns: [
+          "Espesor (mm)",
+          "Ancho (mm)",
+          "Largo (mm)",
+          "Unidades/paquete",
+        ],
+        rows: [
+          ["0.14", "800", "3600", "800"],
+          ["0.18", "800", "3600", "650"],
+          ["0.20", "800", "3600", "575"],
+          ["0.22", "800", "3600", "525"],
+          ["0.23", "800", "3600", "525"],
+          ["0.25", "800", "3600", "450"],
+          ["0.30", "800", "3600", "400"],
+        ],
+      },
+      {
+        title: "Tolerancias dimensionales",
+        columns: ["Dimensión", "Tolerancia"],
+        rows: [
+          ["Espesor", "± 0.04 mm"],
+          ["Ancho", "± 25 mm"],
+          ["Largo", "± 15 mm"],
+        ],
+      },
+    ],
+    image: "/products/calamina-natural-1.webp",
+    imageHover: "/products/calamina-natural-2.webp",
+  }),
+  product({
+    categoryId: "construccion",
+    name: "Calaminas prepintadas",
+    shortDescription: "Calaminas galvanizadas con acabado de color.",
+    description:
+      "Acero zincado por inmersión en caliente, acanalado en ondas conformadas en frío con acabado prepintado para mayor durabilidad y estética.",
+    standards: [
+      "JIS G 3302 / 94 Full Hard GALVANIZADO",
+      "JIS G 3312 SGCH PREPINTADO",
+    ],
+    technical: [
+      "Cara superior: Rojo, Azul, Verde (RAL)",
+      "Cara inferior: Blanco",
+    ],
+    presentation: ["Paquetes de 2 a 3 t"],
+    uses: ["Techos de edificaciones industriales, comerciales y residenciales"],
+    dimensions: [
+      {
+        title: "Dimensiones disponibles",
+        columns: [
+          "Espesor (mm)",
+          "Ancho (mm)",
+          "Largo (mm)",
+          "Unidades/paquete",
+        ],
+        rows: [
+          ["0.14", "800", "3600", "800"],
+          ["0.18", "800", "3600", "650"],
+          ["0.20", "800", "3600", "575"],
+          ["0.22", "800", "3600", "525"],
+          ["0.23", "800", "3600", "525"],
+          ["0.25", "800", "3600", "450"],
+          ["0.30", "800", "3600", "400"],
+        ],
+      },
+      {
+        title: "Composición química",
+        columns: ["Componente", "Porcentaje (%)"],
+        rows: [
+          ["Carbono (máx)", "0.02 - 0.15"],
+          ["Manganeso (máx)", "0.60"],
+          ["Fósforo (máx)", "0.03"],
+          ["Azufre (máx)", "0.035"],
+        ],
+      },
+      {
+        title: "Propiedades mecánicas",
+        columns: ["Propiedad", "Valor"],
+        rows: [
+          ["Límite de Fluencia mín", "205 MPa"],
+          ["Alargamiento", "20 %"],
+        ],
+      },
+      {
+        title: "Tolerancias dimensionales",
+        columns: ["Dimensión", "Tolerancia"],
+        rows: [
+          ["Espesor", "± 0.04 mm"],
+          ["Ancho", "± 25 mm"],
+          ["Largo", "+15 mm / -8 mm"],
+        ],
+      },
+    ],
+    image: "/products/calamina-prepintada-1.webp",
+    imageHover: "/products/calamina-prepintada-2.webp",
+  }),
+  product({
+    categoryId: "construccion",
+    name: "Coberturas Aluzinc",
+    shortDescription: "Coberturas trapezoidales de alta resistencia.",
+    description:
+      "Coberturas de 4 trapecios con recubrimiento de Aluminio y Zinc (Aluzinc) ASTM A792 AZ 60 para máxima protección estructural y anticorrosiva.",
+    standards: ["ASTM A792 / A792M - 22"],
+    technical: [
+      "Aluzinc Natural y Prepintada",
+      "Protección: Aluminio (lámina de óxido) + Zinc (anticorrosión)",
+    ],
+    presentation: ["Paquetes según espesor"],
+    uses: [
+      "Mercados",
+      "Almacenes",
+      "Centros comerciales",
+      "Coliseos",
+      "Viviendas",
+    ],
+    dimensions: [
+      {
+        title: "Dimensiones del perfil",
+        columns: ["Medida", "Valor (mm)"],
+        rows: [
+          ["Ancho total", "1095"],
+          ["Espaciado trapecios", "241"],
+          ["Altura trapecio", "47 - 49"],
+          ["Base superior", "100"],
+          ["Base inferior", "100"],
+          ["Altura de perfil", "25"],
+        ],
+      },
+      {
+        title: "Colores y disponibilidad (RAL)",
+        columns: ["Espesor (mm)", "Rojo", "Azul", "Verde", "Blanco", "Marrón"],
+        rows: [["0.28 a 0.50", "✓", "✓", "✓", "✓", "✓"]],
+        note: "Rojo (3002/3020), Azul (5020/5017), Verde (6002/6035), Blanco (9003), Marrón (8004).",
+      },
+    ],
+    image: "/products/cobertura-aluzinc-1.webp",
+    imageHover: "/products/cobertura-aluzinc-2.webp",
+  }),
+  product({
+    categoryId: "construccion",
+    name: "Clavos para albañileria",
+    shortDescription: "Clavos de acero para madera y construcción.",
+    description:
+      "Clavos de acero trefilado conformado con cabeza para carpintería y construcción general.",
+    standards: ["DIN 1151"],
+    presentation: ["Cajas de 30 kg a granel"],
+    uses: ["Industria de la construcción y trabajos de carpintería en madera"],
+    dimensions: [
+      {
+        title: "Dimensiones y Equivalencias",
+        columns: ["Designación", "Longitud (mm)", "Diámetro (mm)", "Calibre"],
+        rows: [
+          ['2" x 12', "50.8", "2.77", "12"],
+          ['2 1/2" x 10', "63.5", "3.40", "10"],
+          ['3" x 9', "76.2", "3.76", "9"],
+          ['4" x 7', "101.6", "4.57", "7"],
+        ],
+      },
+    ],
+    image: "/products/clavo-albañileria-1.webp",
+    imageHover: "/products/clavo-albañileria-2.webp",
+  }),
+  product({
+    categoryId: "construccion",
+    name: "Clavos para calamina",
+    shortDescription: "Fijaciones con arandela para techos.",
+    description:
+      "Clavos espiralados recubiertos de zinc con cabeza cónica tipo sombrilla, punta de diamante y arandela de jebe para fijación estanca.",
+    standards: ["DIN 1151", "Material Q195"],
+    presentation: ["Caja de 25 kg a granel"],
+    uses: [
+      "Fijación de calaminas",
+      "Componentes de madera",
+      "Baldosas de asbesto",
+      "Tejas de plástico",
+    ],
+    technical: [
+      "Tipo: Espiralado",
+      "Recubrimiento: Zinc",
+      "Cabeza: Cónica tipo sombrilla",
+      "Punta: Diamante",
+      "Accesorio: Arandela de jebe",
+    ],
+    dimensions: [
+      {
+        title: "Dimensiones",
+        columns: ["Designación (BWG)", "Longitud (mm)", "Diámetro (mm)"],
+        rows: [
+          ['BWG 9 x 2"', "50.8", "2.77"],
+          ['BWG 9 x 2 1/2"', "63.5", "3.40"],
+        ],
+      },
+    ],
+    image: "/products/clavo-calamina-1.webp",
+    imageHover: "/products/clavo-calamina-2.webp",
+  }),
+
+  // 2. EJES
+  product({
+    categoryId: "ejes",
+    name: "Barras redondas calibradas 1018 / 1045",
+    shortDescription: "Barras calibradas de precisión para mecanizado.",
+    description:
+      "Barras de acero al carbono de bajo y medio contenido con acabado calibrado. Destacan por su gran exactitud dimensional, calidad superficial y excelente respuesta a tratamientos térmicos.",
+    standards: ["AISI / SAE 1018 / 1045", "DIN / EN 10278 h9"],
+    presentation: ["Barras de 6 m de largo ± 0.50 m"],
+    uses: [
+      "1018: Pines, pernos grado 1, rodillos, pasadores, entre otros",
+      "1045: Tuercas, engranajes, pernos, piñones, chavetas, árboles de transmisión, entre otros",
+    ],
+    dimensions: [
+      {
+        title: "Composición Química",
+        columns: ["Componente", "AISI 1018 (%)", "AISI 1045 (%)"],
+        rows: [
+          ["Carbono", "0.15 - 0.20", "0.43 - 0.50"],
+          ["Manganeso", "0.50 - 0.90", "0.50 - 0.90"],
+          ["Fósforo", "≤ 0.03", "≤ 0.03"],
+          ["Azufre", "≤ 0.05", "≤ 0.05"],
+        ],
+      },
+      {
+        title: "Propiedades Mecánicas",
+        columns: ["Propiedad", "AISI 1018", "AISI 1045"],
+        rows: [
+          ["Límite de Fluencia (MPa) mín", "370", "530"],
+          ["Resistencia a la Tracción (MPa) mín", "420", "630"],
+          ["Alargamiento (%)", "15", "12"],
+          ["Dureza (HB)", "≤ 150", "≤ 220"],
+        ],
+      },
+      {
+        title: "Tolerancias dimensionales (DIN / EN 10278 h9)",
+        columns: ["Diámetro nominal (mm)", "Tolerancia (mm)"],
+        rows: [
+          ["1 ≤ d ≤ 3", "-0.025 / +0.0"],
+          ["3 ≤ d ≤ 6", "-0.030 / +0.0"],
+          ["6 ≤ d ≤ 10", "-0.036 / +0.0"],
+          ["10 ≤ d ≤ 18", "-0.043 / +0.0"],
+          ["18 ≤ d ≤ 30", "-0.052 / +0.0"],
+          ["30 ≤ d ≤ 50", "-0.062 / +0.0"],
+          ["50 ≤ d ≤ 80", "-0.074 / +0.0"],
+          ["80 ≤ d ≤ 120", "-0.087 / +0.0"],
+          ["120 ≤ d ≤ 180", "-0.100 / +0.0"],
+          ["180 ≤ d ≤ 200", "-0.115 / +0.0"],
+        ],
+      },
+      ],
+    image: "/products/barra-redonda-1018-1045-1.webp",
+    imageHover: "/products/barra-redonda-1018-1045-2.webp",
+  }),
+  product({
+    categoryId: "ejes",
+    name: "Barras redondas lisas 1018 / 1020",
+    shortDescription: "Barras para componentes mecánicos de bajos esfuerzos.",
+    description:
+      "Barras redondas lisas laminadas en caliente de bajo carbono. Poseen buena maquinabilidad y soldabilidad, ideales para componentes de baja resistencia y alta tenacidad.",
+    standards: ["AISI / SAE 1018 / 1020", "EN 10060"],
+    presentation: [
+      "Barras de 6 m de largo ± 0.50 m",
+      "Tolerancia longitud: -0 / +50 mm",
+    ],
+    uses: [
+      "Ejes",
+      "Bujes",
+      "Bridas",
+      "Remaches",
+      "Pernos grado 2",
+      "Prensas",
+      "Levas",
+      "Acoples hidráulicos",
+      "Eslabones",
+      "Cadenas",
+    ],
+    dimensions: [
+      {
+        title: "Composición Química",
+        columns: ["Componente", "Porcentaje (%)"],
+        rows: [
+          ["Carbono", "0.18 - 0.20"],
+          ["Manganeso", "0.30 - 0.90"],
+          ["Fósforo", "≤ 0.04"],
+          ["Azufre", "≤ 0.05"],
+        ],
+      },
+      {
+        title: "Propiedades Mecánicas",
+        columns: ["Propiedad", "Valor"],
+        rows: [
+          ["Límite de Fluencia (MPa) mín", "240 - 400"],
+          ["Resistencia a la Tracción (MPa) mín", "400 - 500"],
+          ["Alargamiento (%)", "17 - 27"],
+          ["Dureza (HB)", "≤ 143"],
+        ],
+      },
+      {
+        title: "Tolerancias dimensionales (EN 10060)",
+        columns: ["Diámetro nominal (mm)", "Tolerancia (mm)"],
+        rows: [
+          ["10 ≤ d ≤ 15", "± 0.4"],
+          ["16 ≤ d ≤ 25", "± 0.5"],
+          ["26 ≤ d ≤ 35", "± 0.6"],
+          ["36 ≤ d ≤ 50", "± 0.8"],
+          ["52 ≤ d ≤ 80", "± 1.0"],
+          ["85 ≤ d ≤ 100", "± 1.3"],
+          ["105 ≤ d ≤ 120", "± 1.5"],
+          ["125 ≤ d ≤ 160", "± 2.0"],
+          ["165 ≤ d ≤ 200", "± 2.5"],
+          ["200 ≤ d ≤ 220", "± 3.0"],
+          ["220 ≤ d ≤ 250", "± 4.0"],
+          ["d > 250", "± 6.0"],
+        ],
+        note: "Ovalidad: No debe exceder el 75% de la desviación admisible.",
+      },
+      ],
+    image: "/products/barra-redonda-lisa-1018-1020-1.webp",
+    imageHover: "/products/barra-redonda-lisa-1018-1020-2.webp",
+  }),
+  product({
+    categoryId: "ejes",
+    name: "Barras redondas lisas 1045",
+    shortDescription: "Acero de medio carbono para ejes y pernos.",
+    description:
+      "Barras redondas lisas laminadas en caliente de medio carbono. Ofrecen buena maquinabilidad y la posibilidad de aumentar su dureza mediante tratamientos térmicos.",
+    standards: ["AISI / SAE 1045", "EN 10060"],
+    presentation: [
+      "Barras de 6 m de largo ± 0.50 m",
+      "Tolerancia longitud: -0 / +50 mm",
+    ],
+    uses: [
+      "Pernos y tuercas (deformación en caliente o mecanizado)",
+      "Ejes",
+      "Pines",
+      "Pasadores",
+    ],
+    dimensions: [
+      {
+        title: "Composición Química",
+        columns: ["Componente", "Porcentaje (%)"],
+        rows: [
+          ["Carbono", "0.43 - 0.50"],
+          ["Manganeso", "0.50 - 0.90"],
+          ["Fósforo", "≤ 0.03"],
+          ["Azufre", "≤ 0.05"],
+        ],
+      },
+      {
+        title: "Propiedades Mecánicas",
+        columns: ["Propiedad", "Valor"],
+        rows: [
+          ["Límite de Fluencia (MPa) mín", "310"],
+          ["Resistencia a la Tracción (MPa) mín", "570"],
+          ["Alargamiento (%)", "12"],
+          ["Dureza (HB)", "170 - 200"],
+        ],
+      },
+      {
+        title: "Tolerancias dimensionales (EN 10060)",
+        columns: ["Diámetro nominal (mm)", "Tolerancia (mm)"],
+        rows: [
+          ["10 ≤ d ≤ 12", "± 0.40"],
+          ["13 ≤ d ≤ 15", "± 0.40"],
+          ["16 ≤ d ≤ 22", "± 0.50"],
+          ["24 ≤ d ≤ 25", "± 0.50"],
+          ["26 ≤ d ≤ 30", "± 0.60"],
+          ["32 ≤ d ≤ 35", "± 0.80"],
+          ["d = 52", "± 1.00"],
+          ["55 ≤ d ≤ 75", "± 1.00"],
+          ["d = 80", "± 1.00"],
+        ],
+        note: "Ovalidad: No debe exceder el 75% de la desviación admisible.",
+      },
+      ],
+    image: "/products/barra-redonda-lisa-1045-1.webp",
+    imageHover: "/products/barra-redonda-lisa-1045-2.webp",
+  }),
+  product({
+    categoryId: "ejes",
+    name: "AISI 4140 LAC / AISI 4140 BONIFICADO (QT)",
+    shortDescription: "Acero aleado Cromo-Molibdeno de alta resistencia.",
+    description:
+      "Acero estructural de baja aleación con Cromo y Molibdeno. Se caracteriza por su alta templabilidad, buena resistencia a la fatiga, abrasión e impacto. Suministrado en estado laminado en caliente (LAC) y bonificado (QT).",
+    standards: ["AISI 4140", "ASTM A29 / A29M"],
+    presentation: ["Largos de 6 m"],
+    uses: [
+      "Piezas de maquinaria",
+      "Ejes de transmisión",
+      "Pernos",
+      "Tuercas",
+      "Cigüeñales",
+      "Bielas",
+    ],
+    dimensions: [
+      {
+        title: "Composición Química",
+        columns: ["Componente", "Porcentaje (%)"],
+        rows: [
+          ["Carbono", "0.38 - 0.43"],
+          ["Silicio", "0.15 - 0.40"],
+          ["Manganeso", "0.75 - 1.00"],
+          ["Fósforo", "≤ 0.035"],
+          ["Azufre", "≤ 0.040"],
+          ["Cromo", "0.80 - 1.10"],
+          ["Molibdeno", "0.15 - 0.25"],
+        ],
+      },
+      {
+        title: "Propiedades Mecánicas",
+        columns: ["Propiedad", "Laminado (LAC)", "Bonificado (QT)"],
+        rows: [
+          ["Límite de Fluencia (MPa) mín", "415", "850"],
+          ["Resistencia a la Tracción (MPa) mín", "620", "1000"],
+          ["Alargamiento (%) mín", "18 - 22", "12 - 18"],
+          ["Reducción de área", "57 %", "50 %"],
+        ],
+      },
+      {
+        title: "Dimensiones - Eje AISI 4140 (LAC)",
+        columns: ["Diámetro (mm)"],
+        rows: [[["16"]],
+          ["20", "2.47", "14.83"],
+          ["22", "3.85", "23.12"],
+          ["27", "4.49", "26.97"],
+          ["32", "6.31", "37.88"],
+          ["38", "8.90", "53.42"],
+          ["40", "9.86", "59.19"],
+          ["50", "15.41", "92.48"],
+          ["53", "17.32", "103.91"],
+          ["65", "26.05", "156.29"],
+          ["70", "30.21", "181.26"],
+          ["75", "34.68", "208.08"],
+          ["80", "39.46", "236.75"],
+          ["85", "44.54", "267.27"],
+          ["90", "49.94", "299.64"],
+          ["95", "55.64", "333.86"],
+          ["100", "61.65", "369.92"],
+          ["105", "67.97", "407.84"],
+        ],
+      },
+      {
+        title: "Dimensiones - Eje AISI 4140 QT (Bonificado)",
+        columns: ["Diámetro (mm)"],
+        rows: [[["100"]],
+          ["105", "67.97", "407.84"],
+          ["110", "74.60", "447.61"],
+          ["115", "81.54", "489.22"],
+          ["125", "96.33", "578.00"],
+          ["130", "104.19", "625.17"],
+          ["140", "120.84", "725.05"],
+          ["150", "138.72", "832.33"],
+          ["155", "148.12", "888.74"],
+          ["180", "199.76", "1198.55"],
+          ["200", "246.62", "1479.69"],
+          ["205", "259.10", "1554.60"],
+          ["230", "326.15", "1956.89"],
+          ["250", "385.34", "2312.02"],
+          ["260", "416.78", "2500.68"],
+          ["270", "449.46", "2696.74"],
+          ["300", "554.88", "3329.30"],
+          ["310", "592.49", "3554.96"],
+        ],
+      },
+    ],
+    image: "/products/barra-redonda-4140-1.webp",
+    imageHover: "/products/barra-redonda-4140-2.webp",
+  }),
+  product({
+    categoryId: "ejes",
+    name: "Barras perforadas SAE 1020",
+    shortDescription:
+      "Barras perforadas sin costura para componentes mecánicos.",
+    description:
+      "Barras perforadas sin costura de acero SAE 1020, laminadas en caliente. Destacan por su fácil mecanizado y buena soldabilidad. Pueden someterse a tratamientos de cementación para aumentar su dureza superficial.",
+    standards: ["SAE 1020"],
+    presentation: ["Barras laminadas en caliente"],
+    uses: [
+      "Ejes huecos",
+      "Árboles de transmisión",
+      "Bujes",
+      "Aros",
+      "Espárragos",
+      "Polines",
+    ],
+    dimensions: [
+      {
+        title: "Composición Química",
+        columns: ["Componente", "Porcentaje (%)"],
+        rows: [
+          ["Carbono (máx)", "0.18 - 0.20"],
+          ["Manganeso (máx)", "0.30 - 0.60"],
+          ["Fósforo (máx)", "0.040"],
+          ["Azufre (máx)", "0.050"],
+        ],
+      },
+      {
+        title: "Propiedades Mecánicas",
+        columns: ["Propiedad", "Valor (mín)"],
+        rows: [
+          ["Límite de Fluencia (MPa)", "270"],
+          ["Resistencia a la Tracción (MPa)", "400 - 450"],
+          ["Alargamiento (%)", "25"],
+        ],
+      },
+      {
+        title: "Dimensiones de barras perforadas SAE 1020",
+        columns: ["Diámetro exterior (mm)", "Diámetro interior (mm)", ""],
+        rows: [["50.0", "26.0"]],
+          ["18.74", "63.5", "31.5"],
+          ["34.03", "89.0", "49.0"],
+          ["43.40", "102.0", "58.0"],
+          ["59.38", "114.0", "58.0"],
+          ["39.01", "127.0", "99.0"],
+          ["78.30", "152.0", "102.0"],
+          ["134.41", "159.0", "59.0"],
+          ["114.80", "168.0", "98.0"],
+          ["109.74", "203.0", "153.0"],
+          ["188.66", "203.0", "103.0"],
+          ["251.55", "254.0", "154.0"],
+          ["141.19", "254.0", "204.0"],
+          ["343.29", "254.0", "94.0"],
+          ["307.04", "299.0", "199.0"],
+          ["168.93", "299.0", "249.0"],
+          ["434.04", "402.0", "302.0"],
+        ],
+      },
+    ],
+    image: "/products/barra-perforada-1.webp",
+    imageHover: "/products/barra-perforada-2.webp",
+  }),
+
+  // 3. PERFILES
+  product({
+    categoryId: "perfiles",
+    name: "Barras redondas lisas A36",
+    shortDescription: "Barras lisas para carpintería y estructuras livianas.",
+    description:
+      "Barras macizas de sección circular y superficie lisa, fabricadas por laminación en caliente.",
+    standards: ["ASTM A36 / A36M", "EN 10060"],
+    presentation: [
+      "Barras de 6 metros de longitud",
+      "Tolerancia longitud: -0 / +50 mm",
+    ],
+    uses: ["Estructuras metálicas", "Tijerales", "Carpintería metálica"],
+    technical: [
+      "Material: Acero A36",
+      "Fluencia (mín): 250 MPa",
+      "Tracción (mín): 400 - 550 MPa",
+      "Alargamiento (mín): 20%",
+    ],
+    dimensions: [
+      {
+        title: "Barras redondas lisas A36 (peso teórico)",
+        columns: ["Diámetro"],
+        rows: [[["6 mm"]],
+          ['3/8"', "0.560", "3.36"],
+          ['1/2"', "0.99", "5.97"],
+          ['5/8"', "1.55", "9.32"],
+          ['3/4"', "2.24", "13.43"],
+          ['7/8"', "3.04", "18.27"],
+          ['1"', "3.97", "23.86"],
+          ['1 1/4"', "6.21", "37.29"],
+          ['1 1/2"', "8.950", "53.70"],
+          ['2"', "15.91", "95.46"],
+          ['2 1/2"', "24.86", "149.16"],
+          ['3"', "35.8", "214.79"],
+          ['3 1/2"', "48.73", "292.35"],
+        ],
+      },
+      {
+        title: "Tolerancias dimensionales (EN 10060)",
+        columns: ["Diámetro nominal (mm)", "Tolerancia (mm)"],
+        rows: [
+          ["10 ≤ d ≤ 15", "± 0.40"],
+          ["16 ≤ d ≤ 25", "± 0.50"],
+          ["26 ≤ d ≤ 35", "± 0.60"],
+          ["36 ≤ d ≤ 50", "± 0.80"],
+          ["52 ≤ d ≤ 80", "± 1.0"],
+          ["85 ≤ d ≤ 100", "± 1.3"],
+          ["105 ≤ d ≤ 120", "± 1.5"],
+          ["125 ≤ d ≤ 160", "± 2.0"],
+          ["165 ≤ d ≤ 200", "± 2.5"],
+          ["200 ≤ d ≤ 220", "± 3.0"],
+          ["220 ≤ d ≤ 250", "± 4.0"],
+          ["d > 250", "± 6.0"],
+        ],
+      },
+      {
+        title: 'Composición química (* > 3/4")',
+        columns: ["Componente", "Porcentaje (%)"],
+        rows: [
+          ["Carbono (máx)", "≤ 0.26"],
+          ["Fósforo (máx)", "≤ 0.03"],
+          ["Azufre (máx)", "≤ 0.05"],
+          ["Silicio (máx)", "≤ 0.4"],
+        ],
+      },
+    ],
+    image: "/products/barra-redonda-lisa-1.webp",
+    imageHover: "/products/barra-redonda-lisa-2.webp",
+  }),
+  product({
+    categoryId: "perfiles",
+    name: "Barras cuadradas lisas A36",
+    shortDescription: "Barras cuadradas para rejas y estructuras.",
+    description:
+      "Barras macizas de sección cuadrada y superficie lisa, laminadas en caliente.",
+    standards: ["ASTM A36 / A36M", "EN 10060"],
+    presentation: [
+      "Barras de 6 metros de longitud",
+      "Tolerancia longitud: -0 / +50 mm",
+    ],
+    uses: ["Estructuras metálicas", "Tijeras", "Carpintería metálica"],
+    technical: [
+      "Material: Acero A36",
+      "Fluencia (mín): 250 MPa",
+      "Tracción (mín): 400 - 550 MPa",
+      "Alargamiento (mín): 20%",
+    ],
+    dimensions: [
+      {
+        title: "Tolerancias dimensionales",
+        columns: ["Dimensión (mm)", "Ancho L (mm)", "Diferencia entre caras"],
+        rows: [
+          ["9.00", "50", "75% dim. máx/mín"],
+          ["11.5", "0.4", "-"],
+          ["12", "-", "-"],
+          ["15", "-", "-"],
+          ["15 < L < 25", "0.5", "-"],
+          ["25 < L < 35", "0.6", "-"],
+          ["35 < L < 50", "0.8", "-"],
+          ["50 < L", "1.2", "-"],
+        ],
+      },
+      {
+        title: 'Composición química (* > 3/4")',
+        columns: ["Componente", "Porcentaje (%)"],
+        rows: [
+          ["Carbono (máx)", "≤ 0.26"],
+          ["Fósforo (máx)", "≤ 0.03"],
+          ["Azufre (máx)", "≤ 0.05"],
+          ["Silicio (máx)", "≤ 0.4"],
+        ],
+      },
+    ],
+    image: "/products/barra-cuadrada-lisa-1.webp",
+    imageHover: "/products/barra-cuadrada-lisa-2.webp",
+  }),
+  product({
+    categoryId: "perfiles",
+    name: "Ángulos LAC A36",
+    shortDescription: "Perfil L de acero estructural laminado en caliente.",
+    description:
+      "Perfil de acero estructural laminado en caliente, en forma de “L” de lados iguales, los cuales forman un ángulo de 90°. Este producto tiene una muy buena soldabilidad.",
+    standards: ["ASTM A36 / A36M", "Tolerancias dimensionales: EN 10056"],
+    presentation: [
+      "Unidades de 6 metros de longitud",
+      "Tolerancia longitud: -0 / +50 mm",
+    ],
+    uses: [
+      "Estructuras metálicas livianas y de gran resistencia",
+      "Construcción de grandes naves industriales",
+      "Fabricación de torres de alta tensión",
+    ],
+    technical: [
+      "Límite de Fluencia (mín.): 2530 Kg./cm² (250 MPa)",
+      "Resistencia a la Tracción (mín.): 4080 Kg./cm² (400 MPa)",
+    ],
+    dimensions: [
+      {
+        title: "Dimensiones en Pulgadas",
+        columns: ["Descripción (AxB)", "Espesor (plg)", ""],
+        rows: [[['1 1/2" x 1 1/2"', '1/8"']],
+          ['1 1/2" x 1 1/2"', '3/16"', "2.70", "16.21"],
+          ['1 1/2" x 1 1/2"', '1/4"', "3.51", "21.08"],
+          ['1 3/4" x 1 3/4"', '3/16"', "3.16", "18.93"],
+          ['1 3/4" x 1 3/4"', '1/4"', "4.16", "24.94"],
+          ['2" x 2"', '1/8"', "2.50", "14.97"],
+          ['2" x 2"', '3/16"', "3.66", "21.97"],
+          ['2" x 2"', '1/4"', "4.79", "28.73"],
+          ['2 1/2" x 2 1/2"', '3/16"', "4.57", "27.41"],
+          ['2 1/2" x 2 1/2"', '1/4"', "6.08", "36.50"],
+          ['3" x 3"', '1/4"', "7.35", "44.09"],
+          ['3" x 3"', '5/16"', "9.07", "54.41"],
+          ['3" x 3"', '3/8"', "10.75", "64.51"],
+          ['3" x 3"', '1/2"', "13.99", "83.93"],
+          ['4" x 4"', '1/4"', "9.94", "59.61"],
+          ['4" x 4"', '5/16"', "12.29", "73.74"],
+          ['4" x 4"', '3/8"', "14.60", "87.61"],
+          ['4" x 4"', '1/2"', "19.11", "114.67"],
+          ['5" x 5"', '3/8"', "18.50", "111.00"],
+          ['5" x 5"', '1/2"', "24.40", "146.40"],
+          ['6" x 6"', '1/2"', "29.17", "175.01"],
+          ['6" x 6"', '5/8"', "36.01", "216.08"],
+        ],
+      },
+      {
+        title: "Dimensiones en Milímetros",
+        columns: ["Descripción (AxB)", "Espesor (mm)", ""],
+        rows: [[["18 x 18", "2.0"]],
+          ["20 x 20", "2.0", "0.597", "3.58"],
+          ["20 x 20", "2.5", "0.743", "4.46"],
+          ["20 x 20", "3.0", "0.882", "5.29"],
+          ["25 x 25", "2.0", "0.754", "4.524"],
+          ["25 x 25", "2.5", "0.940", "5.64"],
+          ["25 x 25", "3.0", "1.120", "6.72"],
+          ["25 x 25", "4.5", "1.615", "9.69"],
+          ["25 x 25", "6.0", "2.565", "15.39"],
+          ["30 x 30", "2.0", "0.911", "5.47"],
+          ["30 x 30", "2.1", "1.000", "6.00"],
+          ["30 x 30", "2.5", "1.150", "6.90"],
+          ["30 x 30", "3.0", "1.363", "8.18"],
+          ["30 x 30", "4.5", "1.982", "11.89"],
+          ["30 x 30", "6.0", "2.565", "15.39"],
+          ["38 x 38", "2.38", "1.388", "8.33"],
+        ],
+      },
+      {
+        title: "Dimensiones en Pulgadas x Milímetro",
+        columns: ["Descripción (AxB)", "Espesor (mm)", ""],
+        rows: [[['3/4" x 3/4"', "2.0"]],
+          ['3/4" x 3/4"', "2.5", "0.706", "4.24"],
+          ['3/4" x 3/4"', "3.0", "0.833", "5.00"],
+          ['1 1/2" x 1 1/2"', "3.0", "1.754", "10.53"],
+          ['1 1/2" x 1 1/2"', "4.5", "2.564", "15.39"],
+          ['1 1/2" x 1 1/2"', "6.0", "3.333", "20.00"],
+          ['2" x 2"', "3.0", "2.347", "14.09"],
+          ['2" x 2"', "4.5", "3.472", "20.83"],
+          ['2" x 2"', "6.0", "5.505", "27.03"],
+          ['2 1/2" x 2 1/2"', "4.5", "4.386", "26.32"],
+          ['2 1/2" x 2 1/2"', "6.0", "5.747", "34.48"],
+        ],
+      },
+      {
+        title: "Tolerancias",
+        columns: [
+          "Medidas Ala (mm)",
+          "Tolerancia Ala",
+          "Medida Espesor (mm)",
+          "Tolerancia Espesor",
+        ],
+        rows: [
+          ["a < 50", "± 1.0", "t ≤ 5", "± 0.50"],
+          ["50 < a ≤ 100", "± 2.0", "5 < t ≤ 10", "± 0.75"],
+          ["100 < a ≤ 150", "± 4.0", "10 < t ≤ 15", "± 1.0"],
+          ["150 < a ≤ 200", "-", "15 < t", "± 1.2"],
+          ["200 < a", "-4.0 / +6.0", "...", "..."],
+        ],
+      },
+    ],
+    image: "/products/angulo-lac-a36-1.webp",
+    imageHover: "/products/angulo-lac-a36-2.webp",
+  }),
+  product({
+    categoryId: "perfiles",
+    name: "ASTM A36 / A572 GR 50 (Dual)",
+    shortDescription:
+      "Perfil de acero estructural de alta resistencia y baja aleación.",
+    description:
+      "Perfil de acero estructural laminado en caliente, en forma de “L” de lados iguales, los cuales forman un ángulo de 90°. Este producto tiene una muy buena soldabilidad y mayor resistencia mecánica.",
+    standards: [
+      "ASTM A36 / A572 GR 50 (Dual)",
+      "Tolerancias dimensionales: ASTM A6/A6M",
+    ],
+    presentation: [
+      "Unidades de 6 metros de longitud",
+      "Tolerancia longitud: -0 / +50 mm",
+    ],
+    uses: [
+      "Estructuras metálicas livianas y de gran resistencia",
+      "Construcción de grandes naves industriales de todo tipo",
+      "Fabricación de torres de alta tensión",
+      "Etcétera",
+    ],
+    dimensions: [
+      {
+        title: "Composición Química",
+        columns: ["Elemento", "Valor (%)"],
+        rows: [
+          ["Carbono (C) máx.", "0.23"],
+          ["Silicio (Si) máx.", "0.40"],
+          ["Fósforo (P) máx.", "0.04"],
+          ["Azufre (S) máx.", "0.05"],
+          ["Manganeso (Mn) máx.", "1.35"],
+        ],
+      },
+      {
+        title: "Propiedades Mecánicas",
+        columns: ["Propiedad", "Valor"],
+        rows: [
+          ["Límite de fluencia (mín.)", "3520 kg/cm²"],
+          ["Resistencia a la tracción (mín.)", "4590 – 5620 kg/cm²"],
+        ],
+      },
+      {
+        title: "Elongación",
+        columns: ["Para espesores", "Elongación (mín. en 200 mm)"],
+        rows: [
+          ['3/32", 1/8" y 3/16"', "15.00 %"],
+          ['1/4"', "17.50 %"],
+          ['5/16", 3/8" y 1/2"', "20.00 %"],
+        ],
+      },
+      {
+        title: "Tolerancias Dimensionales",
+        note: "El peso en Kg. debe variar como máximo entre +/- 2.5% del peso nominal.",
+        columns: [
+          "Ancho de Ala",
+          "Tolerancia Ala (mm)",
+          'Tol. Espesor (e ≤ 3/16")',
+          'Tol. Espesor (3/16" < e ≤ 3/8")',
+          'Tol. Espesor (e ≥ 3/8")',
+        ],
+        rows: [
+          ['2 1/2"', "± 1.59", "± 0.30", "± 0.38", "± 0.38"],
+          ['3"', "-2.38 / +3.17", "...", "...", "..."],
+          ['4" hasta 6"', "± 3.17 / -2.38", "...", "...", "..."],
+        ],
+      },
+      {
+        title: "Dimensiones en Pulgadas",
+        columns: ["Descripción (AxB)", "Espesor (plg)", ""],
+        rows: [[['3" x 3"', '1/4"']],
+          ['4" x 4"', '1/4"', "9.935", "59.61"],
+          ['4" x 4"', '3/8"', "14.602", "87.61"],
+          ['4" x 4"', '1/2"', "19.112", "114.67"],
+          ['6" x 6"', '1/2"', "29.170", "175.01"],
+          ['6" x 6"', '5/8"', "36.010", "216.08"],
+        ],
+      },
+    ],
+    image: "/products/angulo-a572-1.webp",
+    imageHover: "/products/angulo-a572-2.webp",
+  }),
+  product({
+    categoryId: "perfiles",
+    name: "Platinas LAC A36",
+    shortDescription: "Planchas delgadas en barras para cerrajería.",
+    description:
+      "Perfil de acero estructural laminado en caliente, de sección rectangular plana.",
+    standards: ["ASTM A36", "EN 10058"],
+    presentation: [
+      "Piezas de 6 metros de longitud",
+      "Tolerancia longitud: -0 / +50 mm",
+    ],
+    uses: ["Estructuras metálicas", "Puertas", "Ventanas", "Rejas"],
+    technical: [
+      "Material: Acero A36",
+      "Fluencia (mín): 250 MPa",
+      "Tracción (mín): 400 - 550 MPa",
+      "Alargamiento (mín): 20%",
+    ],
+    dimensions: [
+      {
+        title: 'Platinas 3/8"',
+        columns: ["Dimensión (pulgadas)", "Peso Teórico (kg/m)"],
+        rows: [
+          ['3/8" x 1"', "1.900"],
+          ['3/8" x 1 1/2"', "2.848"],
+          ['3/8" x 2"', "3.798"],
+          ['3/8" x 2 1/2"', "4.748"],
+          ['3/8" x 3"', "5.698"],
+          ['3/8" x 4"', "7.597"],
+          ['3/8" x 5"', "9.258"],
+        ],
+      },
+      {
+        title: 'Platinas 1/2"',
+        columns: ["Dimensión (pulgadas)", "Peso Teórico (kg/m)"],
+        rows: [
+          ['1/2" x 1"', "12.632"],
+          ['1/2" x 1 1/2"', "15.827"],
+          ['1/2" x 2"', "18.990"],
+          ['1/2" x 3"', "20.260"],
+        ],
+      },
+      {
+        title: 'Platinas 3/4"',
+        columns: ["Dimensión (pulgadas)", "Peso Teórico (kg/m)"],
+        rows: [
+          ['3/4" x 1"', "1.495"],
+          ['3/4" x 1 1/2"', "1.949"],
+          ['3/4" x 2"', "1.724"],
+          ['3/4" x 2 1/2"', "1.734"],
+          ['3/4" x 3"', "1.792"],
+          ['3/4" x 4"', "1.725"],
+          ['3/4" x 5"', "1.714"],
+        ],
+        note: 'Nota: Revisar pesos de 3/4" según aplicación real.',
+      },
+      {
+        title: "Tolerancias",
+        columns: ["Dimensión", "Tolerancia"],
+        rows: [["Espesor", "± 0.8 mm"]],
+      },
+    ],
+    image: "/products/platinas-lac-a36-1.webp",
+    imageHover: "/products/platinas-lac-a36-2.webp",
+  }),
+  product({
+    categoryId: "perfiles",
+    name: "Tee LAC A36",
+    shortDescription: "Perfiles en forma de T para tijerales.",
+    description:
+      "Perfil estructural de acero laminado en caliente con sección en forma de T.",
+    standards: ["ASTM A36 / A36M", "EN 10055"],
+    presentation: [
+      "Unidades de 6 metros de longitud",
+      "Tolerancia longitud: -0 / +50 mm",
+    ],
+    uses: ["Estructuras metálicas", "Tijeras", "Carpintería metálica"],
+    technical: [
+      "Material: Acero A36",
+      "Fluencia (mín): 250 MPa",
+      "Tracción (mín): 400 - 550 MPa",
+      "Alargamiento (mín): 20%",
+    ],
+    dimensions: [
+      {
+        title: "Dimensiones (H x B)",
+        columns: ["Descripción", "tw (mm)", "tf (mm)"],
+        rows: [
+          ["20 x 20 mm", "3.0", "3.0"],
+          ["25 x 25 mm", "3.0", "3.0"],
+          ['1 1/2" x 1 1/2"', "4.5", "4.5"],
+          ['1 1/2" x 1 1/2"', '1/8"', '1/8"'],
+        ],
+      },
+      {
+        title: "Elongación según espesor",
+        columns: ["Espesor", "Elongación mínima (%)"],
+        rows: [
+          ['3 mm y 1/8"', "12.50"],
+          ['3/16"', "15.00"],
+          ['1/4"', "17.50"],
+        ],
+      },
+      {
+        title: "Tolerancias dimensionales",
+        columns: ["Ancho B (mm)", "Tol. B/H (mm)", "Tol. tw/tf (mm)"],
+        rows: [
+          ["B ≤ 50", "± 1.0", "± 0.5"],
+          ["50 < B ≤ 100", "± 1.5", "± 0.75"],
+          ["100 < B", "± 2.0", "± 1.0"],
+        ],
+      },
+      {
+        title: "Composición química",
+        columns: ["Componente", "Porcentaje (%) máx"],
+        rows: [
+          ["Carbono", "0.26"],
+          ["Silicio", "0.40"],
+          ["Fósforo", "0.04"],
+          ["Azufre", "0.05"],
+        ],
+      },
+    ],
+    image: "/products/tee-lac-a36-1.webp",
+    imageHover: "/products/tee-lac-a36-2.webp",
+  }),
+  product({
+    categoryId: "perfiles",
+    name: "Rieles",
+    shortDescription: "Rieles para transporte y guías industriales.",
+    description:
+      "Rieles de acero de alta resistencia y excelente capacidad de carga, diseñados para una vida útil prolongada.",
+    standards: ["GB / T 11264", "Materiales: Q235, 55Q"],
+    presentation: ["Longitudes de 5, 6 y 10 metros"],
+    uses: [
+      "Minería subterránea (socavón)",
+      "Guías de puente grúa",
+      "Guías de vagones de transporte",
+    ],
+    technical: [
+      "Q235: Fluencia 235 MPa, Tracción 500 MPa",
+      "55Q: Tracción 685 MPa",
+    ],
+    dimensions: [
+      {
+        title: "Dimensiones y pesos",
+        columns: ["Ib/yd", "H (mm)", "B (mm)", "A (mm)", "S (mm)", "Mat.", "Long. (m)", ""],
+        rows: [["25", "69.85", "39.1", "7.54", "12.2", "Q235", "6"]],
+          ["15", "30", "79.37", "42.86", "8.33", "15.2", "55Q", "5 y 6"],
+          ["22", "45", "93.66", "50.8", "10.72", "22.3", "55Q", "5 y 6"],
+          ["30", "60", "107.95", "60.33", "12.3", "30.1", "55Q", "6 y 10"],
+        ],
+      },
+      {
+        title: "Composición química",
+        columns: ["Elemento (%)", "Q235", "55Q"],
+        rows: [
+          ["Carbono", "0.17 - 0.22", "0.40 - 0.60"],
+          ["Manganeso", "1.40", "≤ 0.40"],
+          ["Fósforo", "≤ 0.04", "≤ 0.04"],
+          ["Azufre", "≤ 0.05", "≤ 0.04"],
+          ["Silicio", "0.35", "0.15 - 0.36"],
+        ],
+      },
+    ],
+    image: "/products/rieles-acero-1.webp",
+    imageHover: "/products/rieles-acero-2.webp",
+  }),
+  product({
+    categoryId: "perfiles",
+    name: "Canal U",
+    shortDescription: "Perfiles en U para vigas y carrocerías.",
+    description:
+      "Perfil estructural laminado en caliente con sección transversal en forma de U, que ofrece una excelente combinación de resistencia, ductilidad y soldabilidad.",
+    standards: ["ASTM A36 / A36M", "ASTM A6 / A6M"],
+    presentation: ["Unidades de 6 metros de longitud"],
+    uses: [
+      "Estructuras metálicas",
+      "Vigas",
+      "Carrocerías",
+      "Arquitectura",
+      "Industria metalmecánica",
+    ],
+    technical: [
+      "Material: Acero A36",
+      "Fluencia (mín): 250 MPa",
+      "Tracción (mín): 400 - 550 MPa",
+      "Alargamiento (mín): 20%",
+    ],
+    dimensions: [
+      {
+        title: "Dimensiones y pesos teóricos",
+        columns: ["Descripción", "H (mm)", "B (mm)", "tw (mm)", "tf (mm)", ""],
+        rows: [[['Canal U 2" x 2.58 lb/pie', "50.8", "25.4", "4.75", "4.75"]],
+          ['Canal U 3" x 3.50 lb/pie', "76.2", "34.8", "3.35", "6.93", "5.1"],
+          ['Canal U 3" x 4.10 lb/pie', "76.2", "35.81", "4.32", "6.93", "6.1"],
+          ['Canal U 4" x 4.5 lb/pie', "101.6", "40.23", "3.17", "7.52", "6.7"],
+          ['Canal U 4" x 5.4 lb/pie', "101.6", "40.23", "4.67", "7.52", "8.0"],
+          [
+            'Canal U 6" x 8.20 lb/pie',
+            "152.4",
+            "48.77",
+            "5.08",
+            "8.71",
+            "12.2",
+          ],
+          [
+            'Canal U 6" x 10.5 lb/pie',
+            "152.4",
+            "51.66",
+            "7.98",
+            "8.71",
+            "15.6",
+          ],
+          [
+            'Canal U 6" x 13.0 lb/pie',
+            "152.4",
+            "54.86",
+            "11.1",
+            "8.71",
+            "19.3",
+          ],
+          ['Canal U 8" x 11.5 lb/pie', "203.2", "57.4", "5.59", "9.91", "17.1"],
+          [
+            'Canal U 8" x 13.75 lb/pie',
+            "203.2",
+            "59.44",
+            "7.69",
+            "9.91",
+            "20.46",
+          ],
+          [
+            'Canal U 8" x 18.75 lb/pie',
+            "203.2",
+            "64.26",
+            "12.37",
+            "9.91",
+            "27.9",
+          ],
+          [
+            'Canal U 10" x 15.3 lb/pie',
+            "254.0",
+            "66.04",
+            "6.1",
+            "11.07",
+            "22.8",
+          ],
+          [
+            'Canal U 12" x 20.7 lb/pie',
+            "304.8",
+            "74.73",
+            "7.16",
+            "12.73",
+            "30.8",
+          ],
+        ],
+      },
+      {
+        title: "Tolerancias dimensionales",
+        columns: ["H Nominal", "Tol. H (mm)", "Tol. B (mm)"],
+        rows: [
+          ["Hasta 40 mm", "± 1.0", "± 1.0"],
+          ["40 < H < 75 mm", "± 1.58", "± 1.58"],
+          ["75 < H < 180 mm", "+2.38 / -1.58", "± 3.12"],
+          ["180 < H < 350 mm", "+3.12 / -4.76", "+3.17 / -3.96"],
+        ],
+      },
+      {
+        title: "Composición química",
+        columns: ["Componente", "Porcentaje (%)"],
+        rows: [
+          ["Carbono (máx)", "0.26"],
+          ["Fósforo (máx)", "0.04"],
+          ["Azufre (máx)", "0.05"],
+          ["Silicio (máx)", "0.4"],
+          ["Cobre (mín)", "0.2"],
+        ],
+      },
+    ],
+    image: "/products/canal-u-1.webp",
+    imageHover: "/products/canal-u-2.webp",
+  }),
+  product({
+    categoryId: "perfiles",
+    name: "Vigas H",
+    shortDescription: "Vigas de ala ancha para grandes estructuras.",
+    description:
+      "Perfil de acero estructural laminado en caliente con sección transversal en forma de H. Ofrece una gran resistencia a la flexión y torsión.",
+    standards: ["ASTM A36", "ASTM A572 GR 50", "ASTM A992 GR 50"],
+    presentation: ["Unidades de 20', 30' y 40' de longitud"],
+    uses: [
+      "Estructuras metálicas para edificios",
+      "Puentes",
+      "Equipos de plantas industriales",
+      "Vigas y columnas",
+    ],
+    technical: [
+      "ASTM A36: Tracción mín 235 MPa",
+      "ASTM A572 GR 50: Tracción mín 345 MPa",
+      "ASTM A992: Tracción mín 450 MPa",
+    ],
+    dimensions: [
+      {
+        title: "Dimensiones y propiedades",
+        columns: ["Designación", "H (mm)", "B (mm)", "tw (mm)", "tf (mm)", ""],
+        rows: [[['W 4" x 4" x 13', "106", "103", "8.8", "7.1"]],
+          ['W 6" x 4" x 8.5', "148", "100", "4.3", "5.0", "-"],
+          ['W 6" x 4" x 9', "150", "100", "5.5", "4.3", "-"],
+          ['W 6" x 4" x 12', "153", "102", "7.1", "5.8", "-"],
+          ['W 6" x 6" x 15', "152", "156", "6.6", "5.8", "-"],
+          ['W 6" x 6" x 20', "157", "153", "9.3", "6.6", "-"],
+          ['W 8" x 4" x 10', "200", "100", "5.2", "4.3", "-"],
+          ['W 8" x 4" x 13', "203", "102", "6.5", "5.8", "-"],
+          ['W 8" x 4" x 15', "206", "102", "8.0", "6.2", "-"],
+          ['W 8" x 5.25" x 18', "207", "133", "8.4", "5.8", "-"],
+          ['W 8" x 5.25" x 21', "210", "134", "10.2", "6.4", "-"],
+          ['W 8" x 6.5" x 24', "201", "165", "10.2", "6.2", "-"],
+          ['W 8" x 6.5" x 28', "205", "166", "11.8", "7.2", "-"],
+          ['W 8" x 8" x 31', "203", "110", "7.2", "9.19", "46.1"],
+          ['W 8" x 8" x 35', "206", "104", "12.6", "7.9", "-"],
+          ['W 8" x 8" x 40', "210", "105", "14.2", "9.1", "-"],
+          ['W 8" x 8" x 48', "216", "106", "17.4", "10.2", "-"],
+          ['W 8" x 8" x 58', "222", "209", "20.6", "13.0", "-"],
+          ['W 8" x 8" x 67', "229", "210", "23.7", "14.5", "-"],
+          ['W 10" x 4" x 12', "251", "101", "5.3", "4.8", "-"],
+          ['W 10" x 4" x 17', "257", "102", "8.4", "6.1", "-"],
+          ['W 10" x 4" x 19', "260", "102", "10.0", "6.4", "-"],
+          ['W 10" x 5.79" x 22', "258", "146", "9.1", "6.1", "-"],
+          ['W 10" x 5.79" x 26', "262", "147", "11.2", "6.6", "-"],
+          ['W 10" x 5.79" x 30', "266", "148", "13.0", "7.6", "-"],
+          ['W 10" x 8" x 33', "247", "202", "11.0", "7.4", "-"],
+          ['W 10" x 8" x 39', "252", "203", "13.5", "8.0", "-"],
+          ['W 10" x 8" x 45', "257", "204", "15.7", "8.9", "-"],
+          ['W 10" x 10" x 49', "253", "254", "14.2", "8.6", "-"],
+          ['W 10" x 10" x 54', "256", "255", "15.6", "9.4", "-"],
+          ['W 10" x 10" x 60', "260", "256", "17.3", "10.7", "-"],
+          ['W 10" x 10" x 68', "264", "257", "19.6", "11.9", "-"],
+          ['W 10" x 10" x 77', "269", "259", "22.1", "13.5", "-"],
+          ['W 10" x 10" x 88', "275", "261", "25.1", "15.4", "-"],
+          ['W 12" x 4" x 14', "303", "101", "5.7", "5.1", "-"],
+          ['W 12" x 4" x 16', "305", "101", "6.7", "5.6", "-"],
+          ['W 12" x 4" x 19', "309", "102", "8.9", "6.0", "-"],
+        ],
+      },
+      {
+        title: "Composición química (% máx.)",
+        columns: ["Elemento", "ASTM A36", "A572 GR 50", "A992"],
+        rows: [
+          ["Carbono", "0.26", "0.23", "0.25"],
+          ["Manganeso", "-", "1.35", "1.5"],
+          ["Fósforo", "0.04", "0.04", "0.035"],
+          ["Azufre", "0.05", "0.05", "0.045"],
+          ["Silicio", "0.4", "0.4", "0.4"],
+          ["Vanadio", "-", "0.01 - 0.15", "0.15"],
+          ["Niobio", "-", "0.005 - 0.05", "0.05"],
+          ["Cromo", "-", "-", "0.45"],
+          ["Níquel", "-", "-", "0.45"],
+        ],
+      },
+    ],
+    image: "/products/vigas-h-1.webp",
+    imageHover: "/products/vigas-h-2.webp",
+  }),
+
+  // 4. TUBOS CON COSTURA (ERW)
+  product({
+    categoryId: "tubos-con-costura",
+    name: "Tubos redondos negros LAC",
+    shortDescription: "Tubos estructurales redondos de acero.",
+    description:
+      "Tubos fabricados con bobinas de acero laminado en caliente mediante soldadura ERW (resistencia eléctrica por inducción de alta frecuencia).",
+    standards: ["ASTM A500 GR A"],
+    presentation: ["Longitudes de 6 metros"],
+    uses: [
+      "Estructuras metálicas livianas",
+      "Columnas",
+      "Vigas",
+      "Tijerales",
+      "Carrocería",
+    ],
+    technical: ["Fluencia (mín): 230 MPa", "Tracción (mín): 310 MPa"],
+    dimensions: [
+      {
+        title: 'Dimensiones y pesos - 1/2" a 1"',
+        columns: ["DN (in)", "Ext. (mm)", "Esp. (mm)", "Peso (kg/m)"],
+        rows: [
+          ['1/2"', "21.3", "1.5", "0.73"],
+          ['1/2"', "21.3", "2.0", "0.95"],
+          ['3/4"', "26.7", "1.5", "0.93"],
+          ['3/4"', "26.7", "2.0", "1.10"],
+          ['3/4"', "26.7", "3.0", "1.21"],
+          ['1"', "33.4", "1.5", "1.18"],
+          ['1"', "33.4", "2.0", "1.40"],
+          ['1"', "33.4", "3.0", "1.55"],
+          ['1"', "33.4", "4.0", "1.76"],
+          ['1"', "33.4", "5.0", "1.91"],
+        ],
+      },
+      {
+        title: 'Dimensiones y pesos - 1 1/4" a 6"',
+        columns: ["DN (in)", "Ext. (mm)", "Esp. (mm)", "Peso (kg/m)"],
+        rows: [
+          ['1 1/4"', "42.2", "2.0", "1.98"],
+          ['1 1/4"', "42.2", "3.5", "3.34"],
+          ['1 1/2"', "48.3", "2.0", "2.28"],
+          ['1 1/2"', "48.3", "3.0", "3.87"],
+          ['2"', "60.3", "2.0", "2.88"],
+          ['2"', "60.3", "3.0", "3.56"],
+          ['2 1/2"', "73.0", "2.0", "3.50"],
+          ['3"', "88.9", "2.0", "4.29"],
+          ['3"', "88.9", "3.0", "6.36"],
+          ['4"', "114.3", "2.0", "5.54"],
+          ['4"', "114.3", "3.0", "8.23"],
+          ['4"', "114.3", "4.0", "10.88"],
+          ['6"', "168.0", "3.0", "12.23"],
+          ['6"', "168.0", "4.0", "16.21"],
+        ],
+      },
+      {
+        title: "Tolerancias",
+        columns: ["Dimensión", "Tolerancia"],
+        rows: [
+          ["Espesor", "± 10% nom."],
+          ["Longitud", "+12.7 mm / -6.4 mm"],
+        ],
+      },
+      {
+        title: "Composición química",
+        columns: ["Componente", "Porcentaje (%)"],
+        rows: [
+          ["Carbono (máx)", "0.300"],
+          ["Manganeso (máx)", "1.400"],
+          ["Fósforo (máx)", "0.045"],
+          ["Azufre (máx)", "0.045"],
+          ["Cobre (mín)", "0.180"],
+        ],
+      },
+    ],
+    image: "/products/tubo-redondo-negro-lac-1.webp",
+    imageHover: "/products/tubo-redondo-negro-lac-2.webp",
+  }),
+  product({
+    categoryId: "tubos-con-costura",
+    name: "Tubos cuadrados negros LAC",
+    shortDescription: "Tubos estructurales cuadrados de acero.",
+    description:
+      "Tubos fabricados con bobinas de acero laminado en caliente mediante soldadura ERW.",
+    standards: ["ASTM A500 GR A"],
+    presentation: ["Longitudes de 6 metros"],
+    uses: [
+      "Estructuras metálicas livianas",
+      "Columnas",
+      "Vigas",
+      "Tijerales",
+      "Carrocería",
+    ],
+    technical: ["Fluencia (mín): 270 MPa", "Tracción (mín): 310 MPa"],
+    dimensions: [
+      {
+        title: "En pulgadas",
+        columns: ["Descripción (in)", "Espesor (mm)"],
+        rows: [[['3/4" x 3/4"', "1.5"]],
+          ['1 1/2" x 1 1/2"', "1.5", "1.74"],
+          ['2" x 2"', "1.8", "2.79"],
+          ['2" x 2"', "2.3", "3.54"],
+          ['2 1/2" x 2 1/2"', "1.8", "3.51"],
+          ['3 1/2" x 3 1/2"', "2.0", "5.49"],
+          ['4 1/2" x 4 1/2"', "2.3", "8.13"],
+        ],
+      },
+      {
+        title: "En milímetros",
+        columns: ["Dimensión (mm)", "Espesor (mm)"],
+        rows: [[["25 x 25", "1.2"]],
+          ["25 x 25", "2.0", "1.47"],
+          ["38 x 38", "1.5", "1.74"],
+          ["50 x 50", "3.0", "4.49"],
+          ["100 x 100", "6.0", "17.96"],
+        ],
+      },
+      {
+        title: "Composición química",
+        columns: ["Componente", "Porcentaje (%)"],
+        rows: [
+          ["Carbono (máx)", "0.300"],
+          ["Manganeso (máx)", "1.400"],
+          ["Fósforo (máx)", "0.045"],
+          ["Azufre (máx)", "0.045"],
+          ["Cobre (mín)", "0.180"],
+        ],
+      },
+    ],
+    image: "/products/tubo-cuadrado-negro-lac-1.webp",
+    imageHover: "/products/tubo-cuadrado-negro-lac-2.webp",
+  }),
+  product({
+    categoryId: "tubos-con-costura",
+    name: "Tubos rectangulares negros LAC",
+    shortDescription: "Tubos estructurales rectangulares de acero.",
+    description:
+      "Tubos fabricados con bobinas de acero laminado en caliente mediante soldadura ERW.",
+    standards: ["ASTM A500 GR A"],
+    presentation: ["Longitudes de 6 metros"],
+    uses: [
+      "Estructuras metálicas livianas",
+      "Columnas",
+      "Vigas",
+      "Tijerales",
+      "Carrocería",
+    ],
+    technical: ["Fluencia (mín): 270 MPa", "Tracción (mín): 310 MPa"],
+    dimensions: [
+      {
+        title: "Dimensiones y pesos teóricos",
+        columns: ["Dimensión (mm)", "Espesor (mm)"],
+        rows: [[["25 x 50", "1.2"]],
+          ["25 x 50", "2.0", "2.26"],
+          ["40 x 80", "2.0", "3.67"],
+          ["40 x 80", "4.0", "7.15"],
+          ["50 x 100", "2.0", "4.61"],
+          ["50 x 100", "3.0", "6.85"],
+          ["50 x 150", "2.0", "6.18"],
+          ["50 x 150", "4.5", "13.64"],
+        ],
+      },
+      {
+        title: "Tolerancias",
+        columns: ["Dimensión", "Tolerancia"],
+        rows: [
+          ["Espesor", "± 10% nom."],
+          ["Longitud", "+12.7 mm / -6.4 mm"],
+        ],
+      },
+    ],
+    image: "/products/tubo-rectangular-negro-lac-1.webp",
+    imageHover: "/products/tubo-rectangular-negro-lac-2.webp",
+  }),
+  product({
+    categoryId: "tubos-con-costura",
+    name: "Tubos redondos galvanizados",
+    shortDescription: "Tubos redondos con recubrimiento de zinc.",
+    description:
+      "Tubos fabricados con bobinas galvanizadas mediante soldadura ERW, ideales para estructuras resistentes a la corrosión.",
+    standards: ["ASTM A500 GR A", "ASTM A653 / JIS G 3302 - GALVANIZADO"],
+    presentation: ["Longitudes de 6 metros"],
+    uses: [
+      "Estructuras metálicas livianas",
+      "Columnas",
+      "Vigas",
+      "Tijeras",
+      "Carrocería",
+    ],
+    technical: ["Fluencia (mín): 230 MPa", "Tracción (mín): 310 MPa"],
+    dimensions: [
+      {
+        title: "Dimensiones y pesos teóricos",
+        columns: ["DN (in)", "Ext. (mm)", "Espesor (mm)"],
+        rows: [[['3"', "88.9", "1.8"]],
+          ['3"', "88.9", "2.0", "4.41"],
+          ['4"', "114.3", "4.0", "11.21"],
+          ['4"', "114.3", "4.5", "12.55"],
+          ['6"', "167.0", "3.0", "12.50"],
+          ['6"', "167.0", "4.5", "18.57"],
+        ],
+      },
+      {
+        title: "Composición química",
+        columns: ["Componente", "Porcentaje (%)"],
+        rows: [
+          ["Carbono (máx)", "0.300"],
+          ["Manganeso (máx)", "1.400"],
+          ["Fósforo (máx)", "0.045"],
+          ["Azufre (máx)", "0.045"],
+          ["Cobre (mín)", "0.180"],
+        ],
+      },
+    ],
+    image: "/products/tubo-redondo-galvanizado-1.webp",
+    imageHover: "/products/tubo-redondo-galvanizado-2.webp",
+  }),
+  product({
+    categoryId: "tubos-con-costura",
+    name: "Tubos cuadrados galvanizados",
+    shortDescription: "Tubos cuadrados con recubrimiento de zinc.",
+    description:
+      "Tubos fabricados con bobinas galvanizadas mediante soldadura ERW.",
+    standards: ["ASTM A500 GR A / ASTM A653 / JIS G 3302 - GALVANIZADO"],
+    presentation: ["Longitudes de 6 metros"],
+    uses: [
+      "Estructuras metálicas livianas",
+      "Columnas",
+      "Vigas",
+      "Tijeras",
+      "Carrocería",
+    ],
+    technical: ["Fluencia (mín): 270 MPa", "Tracción (mín): 310 MPa"],
+    dimensions: [
+      {
+        title: "En pulgadas",
+        columns: ["Descripción (in)", "Espesor (mm)"],
+        rows: [[['3/4" x 3/4"', "1.2"]],
+          ['1 1/4" x 1 1/4"', "1.2", "1.20"],
+          ['1 1/2" x 1 1/2"', "2.0", "2.36"],
+        ],
+      },
+      {
+        title: "En milímetros",
+        columns: ["Dimensión (mm)", "Espesor (mm)"],
+        rows: [[["25 x 25", "0.9"]],
+          ["25 x 25", "2.0", "1.52"],
+          ["38 x 38", "1.5", "1.79"],
+          ["50 x 50", "3.0", "4.63"],
+          ["100 x 100", "4.5", "14.05"],
+        ],
+      },
+      {
+        title: "Tolerancias",
+        columns: ["Dimensión", "Tolerancia"],
+        rows: [
+          ["Espesor", "± 10% nom."],
+          ["Longitud", "+12.7 mm / -6.4 mm"],
+        ],
+      },
+    ],
+    image: "/products/tubo-cuadrado-galvanizado-1.webp",
+    imageHover: "/products/tubo-cuadrado-galvanizado-2.webp",
+  }),
+  product({
+    categoryId: "tubos-con-costura",
+    name: "Tubos laminados en frío (A513)",
+    shortDescription: "Tubos de precisión con acabado superior.",
+    description:
+      "Tubos fabricados con flejes laminados en frío mediante soldadura ERW, con excelente acabado superficial.",
+    standards: ["ASTM A513"],
+    presentation: ["Longitudes de 6 metros"],
+    uses: [
+      "Carpintería metálica",
+      "Muebles",
+      "Tubos de escape",
+      "Estructuras livianas",
+    ],
+    dimensions: [
+      {
+        title: "Tubos Redondos",
+        columns: ["DN", "Ext. (mm)", "Espesor (mm)"],
+        rows: [[['1/2"', "12.7", "0.8"]],
+          ['3/4"', "19.05", "1.2", "0.53"],
+          ['1"', "25.4", "1.2", "0.70"],
+          ['1 1/2"', "38.1", "1.2", "1.09"],
+        ],
+      },
+      {
+        title: "Tubos Cuadrados",
+        columns: ["Descripción", "Espesor (mm)"],
+        rows: [[['3/4" x 3/4"', "1.2"]],
+          ['1" x 1"', "1.2", "0.92"],
+          ['1 1/2" x 1 1/2"', "1.2", "1.40"],
+          ["25 x 25 mm", "1.2", "0.91"],
+        ],
+      },
+      {
+        title: "Tolerancias (Ancho de lado)",
+        columns: ["Rango", "Tolerancia (mm)"],
+        rows: [
+          ["≤ 50 mm", "± 0.25"],
+          ["> 50 mm", "± 0.41"],
+        ],
+      },
+    ],
+    image: "/products/tubo-laminado-frio-1.webp",
+    imageHover: "/products/tubo-laminado-frio-2.webp",
+  }),
+
+  // 5. TUBOS SIN COSTURA
+  product({
+    categoryId: "tubos-sin-costura",
+    name: "Tubos Schedule (SCH 40/80/160)",
+    shortDescription: "Tubería sin costura para alta presión.",
+    description:
+      "Tubos de acero al carbono sin costura (trinorma), aptos para ser soldados o roscados. Diseñados para la conducción de fluidos a alta presión y temperatura.",
+    standards: ["ASTM A53 / A106 / API 5L GR B"],
+    presentation: [
+      "Largos de 6 metros, extremos biselados con recubrimiento negro",
+    ],
+    uses: [
+      "Conducción de fluidos a alta presión (agua, gases, vapor, petróleo)",
+      "Industria química y petroquímica",
+      "Refinerías",
+      "Centrales térmicas",
+    ],
+    technical: [
+      "Límite de Fluencia (mín): 240 MPa",
+      "Resistencia a la Tracción (mín): 415 MPa",
+      "Alargamiento (mín): 23%",
+    ],
+    dimensions: [
+      {
+        title: "Tabla de dimensiones y espesores",
+        columns: ["DN", "OD (in)", "OD (mm)", "SCH 40 (mm)", "SCH 80 (mm)"],
+        rows: [
+          ['1/2"', "0.840", "21.34", "2.77", "3.73"],
+          ['3/4"', "1.050", "26.67", "2.87", "3.91"],
+          ['1"', "1.315", "33.40", "3.38", "4.55"],
+          ['1 1/4"', "1.660", "42.16", "3.56", "4.85"],
+          ['1 1/2"', "1.900", "48.26", "3.68", "5.08"],
+          ['2"', "2.375", "60.33", "3.91", "5.54"],
+          ['2 1/2"', "2.875", "73.03", "5.16", "7.01"],
+          ['3"', "3.500", "88.90", "5.49", "7.62"],
+          ['4"', "4.500", "114.30", "6.02", "8.56"],
+          ['6"', "6.625", "168.28", "7.11", "11.00"],
+          ['8"', "8.625", "219.08", "8.18", "12.70"],
+          ['10"', "10.750", "273.05", "9.27", "15.10"],
+          ['12"', "12.750", "323.85", "10.31", "17.40"],
+        ],
+      },
+      {
+        title: "Estándar (Diámetros grandes)",
+        columns: ["DN", "OD (mm)", "Espesor (mm)"],
+        rows: [[['12"', "323.85", "9.52"]],
+          ['14"', "355.60", "9.52", "81.33"],
+          ['16"', "406.40", "9.52", "93.17"],
+        ],
+      },
+    ],
+    image: "/products/tubo-schedule-1.webp",
+    imageHover: "/products/tubo-schedule-2.webp",
+  }),
+  product({
+    categoryId: "tubos-sin-costura",
+    name: "Tubos para calderas A192",
+    shortDescription: "Tubos sin costura para intercambiadores de calor.",
+    description:
+      "Tubos de acero sin costura, de bajo contenido de carbono, diseñados para calderas y servicios de alta temperatura.",
+    standards: ["ASTM A 192"],
+    presentation: ["Largos de 6, 9.144 y 11 metros"],
+    uses: [
+      "Calderas",
+      "Intercambiadores de calor",
+      "Hornos de refinerías",
+      "Sobrecalentadores",
+    ],
+    technical: [
+      "Fluencia (mín): 180 MPa",
+      "Tracción (mín): 325 MPa",
+      "Alargamiento (mín): 35%",
+    ],
+    dimensions: [
+      {
+        title: "Dimensiones comerciales y ASTM",
+        columns: ["DN", "Ext. D1 (mm)", "Ext. D2 (mm)"],
+        rows: [
+          ['3/4"', "19.05", "26.67"],
+          ['1"', "25.40", "33.40"],
+          ['1 1/4"', "31.75", "42.16"],
+          ['1 1/2"', "38.10", "48.26"],
+          ['2"', "50.80", "60.33"],
+          ['2 1/2"', "63.50", "73.03"],
+          ['3"', "76.20", "88.90"],
+          ['4"', "101.60", "114.30"],
+        ],
+        note: "D1: Estándar comercial. D2: Según ASTM A53.",
+      },
+      {
+        title: "Tolerancias dimensionales",
+        columns: ["Rango de diámetro", "Tolerancia"],
+        rows: [
+          ['2" ≤ d < 2 1/2"', "± 0.25 mm"],
+          ['2 1/2" ≤ d < 3"', "+0.3 mm / -0.2 mm"],
+          ["Espesor", "-0% / +22% nom."],
+        ],
+      },
+      {
+        title: "Composición química",
+        columns: ["Componente", "Porcentaje (%)"],
+        rows: [
+          ["Carbono", "0.06 - 0.18"],
+          ["Manganeso", "0.27 - 0.63"],
+          ["Fósforo (máx)", "0.035"],
+          ["Azufre (máx)", "0.035"],
+          ["Silicio (máx)", "0.250"],
+        ],
+      },
+    ],
+    image: "/products/tubo-caldera-1.webp",
+    imageHover: "/products/tubo-caldera-2.webp",
+  }),
+
+  // 6. PLANCHAS LAC
+  product({
+    categoryId: "planchas-lac",
+    name: "Planchas LAC A36",
+    shortDescription: "Planchas estructurales laminadas en caliente.",
+    description:
+      "Planchas de acero de bajo carbono obtenidas por laminación en caliente, ideales para propósitos estructurales generales.",
+    standards: ["ASTM A36 / A36M", "ASTM A6 / A6M", "JIS G3193"],
+    presentation: ["Planchas con formatos comerciales diversos"],
+    uses: [
+      "Estructuras metálicas",
+      "Equipos mecánicos",
+      "Silos de almacenamiento",
+      "Puentes",
+      "Perfiles conformados y soldados",
+    ],
+    technical: [
+      "Límite de Fluencia (mín): 250 MPa",
+      "Resistencia a la Tracción (mín): 400 MPa",
+    ],
+    dimensions: [
+      {
+        title: "Formato 1500 x 6000 mm",
+        columns: ["Espesor (mm)"],
+        rows: [[["2.0"]],
+          ["3.0", "211.95"],
+          ["4.5", "317.93"],
+          ["6.0", "423.90"],
+          ["9.0", "635.85"],
+          ["12.0", "847.80"],
+          ["19.0", "1342.35"],
+          ["25.0", "1766.25"],
+          ["50.0", "3532.50"],
+        ],
+      },
+      {
+        title: "Formato 1200 x 2400 mm",
+        columns: ["Espesor (mm)"],
+        rows: [[["1.5"]],
+          ["2.0", "45.22"],
+          ["3.0", "67.82"],
+          ["4.5", "101.74"],
+          ["6.0", "135.65"],
+        ],
+      },
+      {
+        title: "Formato 2400 x 6000 mm",
+        columns: ["Espesor (mm)"],
+        rows: [[["6.0"]],
+          ["12.0", "1356.48"],
+          ["25.0", "2826.00"],
+          ["50.0", "5652.00"],
+          ["100.0", "11304.00"],
+        ],
+      },
+      {
+        title: "Tolerancias de Espesor",
+        columns: ["Espesor (mm)", "Ancho ≤ 1200", "Ancho > 1200"],
+        rows: [
+          ["1.8 - 1.9", "± 0.19", "± 0.23"],
+          ["2.0 - 2.4", "± 0.20", "± 0.25"],
+          ["4.0 - 5.9", "± 0.45", "± 0.55"],
+          ["6.0", "± 0.50", "± 0.55"],
+          ["12.0", "± 0.70", "± 0.80"],
+        ],
+      },
+    ],
+    image: "/products/plancha-lac-a36-1.webp",
+    imageHover: "/products/plancha-lac-a36-2.webp",
+  }),
+  product({
+    categoryId: "planchas-lac",
+    name: "Plancha estriada (Lágrima)",
+    shortDescription: "Plancha antideslizante para pisos.",
+    description:
+      "Acero estructural laminado en caliente con resaltes distribuidos uniformemente (lágrimas) para propósitos antideslizantes.",
+    standards: ["ASTM A36 / A36M", "ASTM A786"],
+    presentation: ["Planchas de 1200 x 2400 mm y 1500 x 6000 mm"],
+    uses: [
+      "Pisos para escaleras",
+      "Plataformas",
+      "Camiones y buses",
+      "Estructuras",
+    ],
+    technical: ["Fluencia (mín): 250 MPa", "Tracción (mín): 400 - 550 MPa"],
+    dimensions: [
+      {
+        title: "Formato 1200 x 2400 mm",
+        columns: ["Espesor (mm)"],
+        rows: [[["2.0"]],
+          ["2.5", "63.27"],
+          ["3.9", "102.91"],
+          ["5.9", "155.69"],
+        ],
+      },
+      {
+        title: "Formato 1500 x 6000 mm",
+        columns: ["Espesor (mm)"],
+        rows: [[["3.0"]],
+          ["4.5", "329.52"],
+          ["6.0", "436.00"],
+        ],
+      },
+      {
+        title: "Composición química",
+        columns: ["Componente", "Porcentaje (%)"],
+        rows: [
+          ["Carbono", "0.15 - 0.20"],
+          ["Manganeso (máx)", "1.20"],
+          ["Fósforo (máx)", "0.04"],
+          ["Azufre (máx)", "≤ 0.05"],
+        ],
+      },
+      {
+        title: "Tolerancias",
+        columns: ["Dimensión", "Tolerancia"],
+        rows: [
+          ["Ancho", "+10 / -0 mm"],
+          ["Longitud", "+13 / -0 mm"],
+        ],
+      },
+    ],
+    image: "/products/plancha-estriada-1.webp",
+    imageHover: "/products/plancha-estriada-2.webp",
+  }),
+
+  // 7. PLANCHAS ESPECIALES
+  product({
+    categoryId: "planchas-especiales",
+    name: "Planchas para calderas y tanques",
+    shortDescription: "Planchas para recipientes a presión (A285 / A516).",
+    description:
+      "Planchas de acero de calidad estructural para la fabricación de calderas y recipientes a presión. Incluye grados A285 para esfuerzos moderados y A516 para servicios de baja y moderada temperatura.",
+    standards: ["ASTM A285 GR C", "ASTM A516 GR 70"],
+    presentation: ["Planchas de 8' x 24' (pies)"],
+    uses: ["Calderas", "Tanques de combustible", "Intercambiadores", "Recipientes a presión"],
+    technical: [
+      "A285: Fluencia mín 205 MPa, Tracción 380-515 MPa",
+      "A516: Fluencia mín 260 MPa, Tracción 485-620 MPa",
+    ],
+    dimensions: [
+      {
+        title: "Dimensiones y pesos (8' x 24')",
+        columns: ["Espesor (in)", "Ancho (pies)", "Largo (pies)"],
+        rows: [[['1/4"', "8'", "24'"]],
+          ['3/8"', "8'", "24'", "1333.72"],
+          ['1/2"', "8'", "24'", "1778.30"],
+          ['5/8"', "8'", "24'", "2222.87"],
+          ['3/4"', "8'", "24'", "2667.45"],
+        ],
+      },
+      {
+        title: "Composición química (A516 GR 70)",
+        columns: ["Elemento", "Espesor (mm)", "Valor (%)"],
+        rows: [
+          ["Carbono (máx)", "≤ 12.5", "0.27"],
+          ["Carbono (máx)", "12.5 - 50", "0.28"],
+          ["Manganeso", "-", "0.85 - 1.20"],
+          ["Fósforo (máx)", "-", "0.025"],
+          ["Azufre (máx)", "-", "0.025"],
+        ],
+      },
+      {
+        title: "Comparativa entre A285 GR C y A516 GR 70",
+        columns: ["Propiedad", "ASTM A285 GR C", "ASTM A516 GR 70"],
+        rows: [
+          ["Límite de Fluencia (MPa) min", "205", "260"],
+          ["Resistencia a la Tracción (MPa) min", "380 - 515", "485 - 620"],
+          ["Alargamiento (200 mm)", "23%", "17%"],
+          ["Carbono (máx)", "0.28%", "0.27 - 0.31%"],
+          ["Fósforo (máx)", "0.035%", "0.025%"],
+          ["Azufre (máx)", "0.035%", "0.025%"],
+          ["Aplicación principal", "Calderas, recipientes estacionarios", "Recipientes a presión, tanques"],
+        ],
+      },
+      {
+        title: "Composición química (A285 GR C)",
+        columns: ["Componente", "Porcentaje (%) máx"],
+        rows: [
+          ["Carbono", "0.28"],
+          ["Manganeso", "0.90"],
+          ["Fósforo", "0.035"],
+          ["Azufre", "0.035"],
+        ],
+      },
+    ],
+    image: "/products/plancha-caldera-tanque-1.webp",
+    imageHover: "/products/plancha-caldera-tanque-2.webp",
+  }),
+  product({
+    categoryId: "planchas-especiales",
+    name: "Planchas antiabrasivas Mirohard",
+    shortDescription: "Planchas de alta dureza resistentes al desgaste.",
+    description:
+      "Acero resistente a la abrasión con dureza media de 450/500 HB, obtenida por templado y revenido. Posee dureza homogénea y excelente soldabilidad.",
+    standards: ["GB/T 24186-2022", "Tolerancias EN 10029"],
+    presentation: ["Formatos comerciales según espesor"],
+    uses: ["Minería", "Tolvas", "Chancadoras", "Cucharas de excavadora", "Blindajes"],
+    technical: [
+      "Mirohard 450: HB 420-480, Fluencia 1250 MPa",
+      "Mirohard 500: HB 450-550, Fluencia 1450 MPa",
+      "Energía de Impacto: 24 J a -20°C",
+    ],
+    dimensions: [
+      {
+        title: "Composición química (% máx.)",
+        columns: ["Elemento", "Mirohard 450", "Mirohard 500"],
+        rows: [
+          ["Carbono", "0.350", "0.380"],
+          ["Silicio", "0.700", "0.700"],
+          ["Manganeso", "1.700", "1.700"],
+          ["Fósforo", "0.025", "0.020"],
+          ["Azufre", "0.010", "0.010"],
+          ["Cromo", "1.400", "1.500"],
+        ],
+      },
+      {
+        title: "Propiedades mecánicas",
+        columns: ["Propiedad", "MH 450", "MH 500"],
+        rows: [
+          ["Esfuerzo de Fluencia (MPa)", "1250", "1450"],
+          ["Alargamiento (%)", "24", "24"],
+          ["Impacto (-20°C) (J)", "24", "24"],
+        ],
+      },
+      {
+        title: "Resumen comparativo Mirohard",
+        columns: ["Característica", "MIROHARD 450", "MIROHARD 500"],
+        rows: [
+          ["Dureza (HB)", "420 - 480", "450 - 550"],
+          ["Esfuerzo de Fluencia (MPa)", "1250", "1450"],
+          ["Alargamiento (%)", "24", "24"],
+          ["Energía de Impacto a -20°C (J)", "24", "24"],
+          ["Carbono (%)", "0.350", "0.380"],
+          ["CEV (Tip)", "0.510", "0.590"],
+        ],
+      },
+    ],
+    image: "/products/planchas-antiabrasiva-mirohard-1.webp",
+    imageHover: "/products/planchas-antiabrasiva-mirohard-2.webp",
+  }),
+  product({
+    categoryId: "planchas-especiales",
+    name: "Planchas expandidas",
+    shortDescription: "Mallas de acero expandido (Metal Desplegado).",
+    description:
+      "Mallas metálicas de una sola pieza con aberturas en forma de rombo, fabricadas sin soldadura mediante un proceso de corte y estirado.",
+    standards: ["Q195 / AISI 304", "GB/T 700"],
+    presentation: ["Planchas de 1220 x 2440 mm"],
+    uses: ["Guardas de seguridad", "Cercos perimétricos", "Usos decorativos"],
+    technical: [
+      "Material: Acero natural, Galvanizado o Inoxidable 304",
+      "Alta resistencia y mínima deflexión",
+    ],
+    dimensions: [
+      {
+        title: "Dimensiones de aberturas",
+        columns: ["Denominación", "Abertura (mm)", "Vena (mm)", "Espesor (mm)"],
+        rows: [
+          ['3/8"', "10 x 20", "1.60", "1.33"],
+          ['1/2"', "12 x 30", "1.65", "1.33"],
+        ],
+      },
+      {
+        title: "Composición química (% máx.)",
+        columns: ["Elemento", "Acero Natural", "Inox 304"],
+        rows: [
+          ["Carbono", "0.12", "0.08"],
+          ["Manganeso", "0.50", "2.00"],
+          ["Cromo", "-", "20.00"],
+          ["Níquel", "-", "10.50"],
+        ],
+      },
+      {
+        title: "Resumen por tipo de malla",
+        columns: ["Tipo", "Abertura 3/8\"", "Abertura 1/2\"", "Espesor (mm)", "Dimensiones (mm)"],
+        rows: [
+          ["Acero Natural", "✓", "✓", "1.33", "1220 x 2440"],
+          ["Galvanizado", "✓", "✓", "1.33", "1220 x 2440"],
+          ["Inoxidable 304", "✓", "✓", "1.33", "1220 x 2440"],
+        ],
+      },
+      {
+        title: "Composición química (Natural / Galvanizado)",
+        columns: ["Componente", "Porcentaje (%) máx"],
+        rows: [
+          ["Carbono", "0.12"],
+          ["Silicio", "0.30"],
+          ["Manganeso", "0.50"],
+          ["Fósforo", "0.035"],
+          ["Azufre", "0.040"],
+        ],
+      },
+    ],
+    image: "/products/plancha-expandida-1.webp",
+    imageHover: "/products/plancha-expandida-2.webp",
+  }),
+
+  // 8. BOBINAS Y PLANCHAS
+  product({
+    categoryId: "bobinas-y-planchas",
+    name: "Laminadas en frío (LAF)",
+    shortDescription: "Planchas LAF para muebles y electrodomésticos.",
+    description:
+      "Planchas de acero de bajo carbono laminadas en frío, ideales para aplicaciones que requieren un acabado superficial superior.",
+    standards: ["JIS G3141 SPCC SD"],
+    presentation: ["Bobinas y planchas de 1200 x 2400 mm"],
+    uses: ["Muebles metálicos", "Cubiertas de equipos", "Electrodomésticos", "Paneles"],
+    technical: [
+      "Fluencia (mín): 140 - 250 MPa",
+      "Carbono: 0.02 - 0.15%",
+    ],
+    dimensions: [
+      {
+        title: "Planchas LAF (1200 x 2400 mm)",
+        columns: ["Espesor (mm)", "Ancho (mm)", "Largo (mm)"],
+        rows: [[["0.55", "1200", "2400"]],
+          ["0.75", "1200", "2400", "16.96"],
+          ["0.85", "1200", "2400", "19.22"],
+          ["1.15", "1200", "2400", "26.00"],
+          ["1.45", "1200", "2400", "32.78"],
+          ["1.90", "1200", "2400", "42.96"],
+        ],
+      },
+      {
+        title: "Bobinas LAF y Disponibilidad",
+        columns: ["Espesor (mm)", "Plancha (1200x2400)", "Bobina (Ancho 1200)"],
+        rows: [
+          ["0.55", "(12.43 kg)", "✓"],
+          ["0.75", "(16.96 kg)", "✓"],
+          ["0.85", "(19.22 kg)", "✓"],
+          ["1.15", "(26.00 kg)", "✓"],
+          ["1.45", "(32.78 kg)", "✓"],
+          ["1.90", "(42.96 kg)", "✓"],
+        ],
+      },
+    ],
+    image: "/products/laminada-frio-1.webp",
+    imageHover: "/products/laminada-frio-2.webp",
+  }),
+  product({
+    categoryId: "bobinas-y-planchas",
+    name: "Planchas y bobinas galvanizadas",
+    shortDescription: "Recubrimiento de zinc para protección.",
+    description:
+      "Acero de bajo carbono galvanizado por inmersión en caliente. Combina la resistencia mecánica del acero con la protección anticorrosiva del zinc.",
+    standards: ["ASTM A653 / JIS G3302"],
+    presentation: ["Bobinas y planchas de 1200 x 2400 mm"],
+    uses: ["Refrigeración", "Construcción", "Automotriz", "Metalmecánica"],
+    technical: [
+      "Recubrimientos: Z120, Z90, Z60",
+      "Elongación: ≥ 20%",
+    ],
+    dimensions: [
+      {
+        title: "Pesos planchas (1200 x 2400 mm)",
+        columns: ["Espesor (mm)", "Ancho (mm)"],
+        rows: [[["0.45", "1200"]],
+          ["0.70", "1200", "15.83"],
+          ["1.00", "1200", "22.61"],
+          ["1.50", "1200", "33.91"],
+          ["2.00", "1200", "44.21"],
+          ["2.70", "1200", "60.04"],
+        ],
+        note: "Espesores disponibles desde 0.45 mm hasta 2.70 mm.",
+      },
+      {
+        title: "Rango de espesores Galvanizados",
+        columns: ["Espesor (mm)"],
+        rows: [[["0.45"]],
+          ["0.50", "3.93", "11.30"],
+          ["0.75", "5.89", "16.96"],
+          ["1.00", "7.85", "22.61"],
+          ["1.50", "11.77", "33.91"],
+          ["2.00", "15.70", "44.21"],
+          ["2.70", "21.20", "60.04"],
+        ],
+      },
+    ],
+    image: "/products/plancha-bobina-galvanizada-1.webp",
+    imageHover: "/products/plancha-bobina-galvanizada-2.webp",
+  }),
+  product({
+    categoryId: "bobinas-y-planchas",
+    name: "Bobinas de Aluzinc (AZ 55%)",
+    shortDescription: "Protección extrema contra la corrosión.",
+    description:
+      "Bobinas de acero con aleación de Aluminio (55%), Zinc (43.4%) y Silicio (1.6%). Ofrecen una resistencia a la corrosión de 4 a 6 veces superior al galvanizado.",
+    standards: ["ASTM A792"],
+    presentation: ["Bobinas de ancho 1220 mm", "Peso aprox. 4.0 t"],
+    uses: ["Coberturas", "Ductos", "Paneles autoportantes", "Capa anticorrosiva"],
+    technical: [
+      "Resistencia extrema a la corrosión",
+      "Alta reflectividad solar",
+      "Conformables y soldables",
+    ],
+    dimensions: [
+      {
+        title: "Disponibilidad por Espesor (mm)",
+        columns: ["Espesor", "Natural", "Verde (RAL 6002/6035)"],
+        rows: [
+          ["0.25", "✓", "-"],
+          ["0.28", "✓", "✓"],
+          ["0.33", "✓", "✓"],
+          ["0.45", "✓", "✓"],
+          ["0.55", "✓", "✓"],
+        ],
+        note: "Otros colores (Rojo, Azul, Gris, Blanco, Marrón) disponibles bajo pedido.",
+      },
+      {
+        title: "Tabla de colores Aluzinc",
+        columns: ["Espesor (mm)", "Natural", "Rojo", "Azul", "Verde", "Blanco", "Marrón"],
+        rows: [
+          ["0.25", "X", "-", "-", "-", "-", "-"],
+          ["0.28", "X", "-", "-", "X", "-", "-"],
+          ["0.30", "X", "-", "-", "-", "-", "-"],
+          ["0.33", "X", "-", "-", "X", "-", "-"],
+          ["0.38", "X", "-", "-", "X", "-", "-"],
+          ["0.45", "X", "-", "-", "X", "-", "-"],
+          ["0.55", "X", "-", "-", "X", "-", "-"],
+        ],
+        note: "Nota: X indica disponibilidad común. Otros colores bajo pedido.",
+      },
+    ],
+    image: "/products/bobinas-aluzinc-1.webp",
+    imageHover: "/products/bobinas-aluzinc-2.webp",
+  }),
+];
+
+export function getCategoryById(id: string) {
+  return catalogCategories.find((c) => c.id === id) ?? null;
+}
+
+export function getProductById(id: string) {
+  return catalogProducts.find((p) => p.id === id) ?? null;
+}
+
+export function getProductsByCategory(categoryId: CatalogCategoryId) {
+  return catalogProducts.filter((p) => p.categoryId === categoryId);
+}

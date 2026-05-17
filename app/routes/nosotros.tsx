@@ -8,7 +8,8 @@ import type { Route } from "./+types/nosotros";
 
 export function meta({}: Route.MetaArgs) {
   const title = "Sobre Nosotros | Aceros Aldamar";
-  const desc = "Conoce nuestra historia, misión y compromiso con la calidad en el sector siderúrgico. Aceros Aldamar, tu aliado estratégico en cada proyecto.";
+  const desc =
+    "Conoce nuestra historia, misión y compromiso con la calidad en el sector siderúrgico. Aceros Aldamar, tu aliado estratégico en cada proyecto.";
   const url = "https://acerosaldamar.com/nosotros";
   const image = "https://acerosaldamar.com/og-image.png";
 
