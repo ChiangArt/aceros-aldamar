@@ -33,6 +33,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Add CNAME
+        run: echo "acerosaldamar.com" > build/client/CNAME
+
       - name: Fix for GitHub Pages routing
         run: cp build/client/index.html build/client/404.html
 
@@ -40,7 +43,7 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v3F
         with:
           path: "./build/client"
 
