@@ -2468,10 +2468,10 @@ export const catalogProducts: CatalogProduct[] = [
   }),
   product({
     categoryId: "bobinas-y-planchas",
-    name: "Bobinas de Aluzinc (AZ 55%)",
+    name: "Bobinas de Aluzinc",
     shortDescription: "Protección extrema contra la corrosión.",
     description:
-      "Bobinas de acero con aleación de Aluminio (55%), Zinc (43.4%) y Silicio (1.6%). Ofrecen una resistencia a la corrosión de 4 a 6 veces superior al galvanizado.",
+      "Bobinas de acero con aleación de Aluminio, Zinc (43.4%) y Silicio (1.6%). Ofrecen una resistencia a la corrosión de 4 a 6 veces superior al galvanizado.",
     standards: ["ASTM A792"],
     presentation: ["Bobinas de ancho 1220 mm", "Peso aprox. 4.0 t"],
     uses: ["Coberturas", "Ductos", "Paneles autoportantes", "Capa anticorrosiva"],
