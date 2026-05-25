@@ -2464,7 +2464,7 @@ export const catalogProducts: CatalogProduct[] = [
       },
     ],
     image: "/products/plancha-bobina-galvanizada-1.webp",
-    imageHover: "/products/plancha-galvanizada-2.webp",
+    imageHover: "/products/plancha-bobina-galvanizada-2.webp",
   }),
   product({
     categoryId: "bobinas-y-planchas",
