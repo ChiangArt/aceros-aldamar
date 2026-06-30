@@ -40,17 +40,11 @@ export function Navbar() {
           className="flex items-center justify-center cursor-pointer"
           data-hover
         >
-          <div>
-            <Logo size={40} color="text-primary" offsetY={20} />
-          </div>
-          <div className="flex flex-col ml-2 leading-none">
-            <span className="text-base md:text-lg font-black text-white tracking-[0.15em]">
-              ACEROS
-            </span>
-            <span className="text-[10px] md:text-[11px] font-bold text-primary tracking-[0.4em] -mt-0.5">
-              ALDAMAR
-            </span>
-          </div>
+          <img
+            src="/logo-aceros.svg"
+            alt="Aceros Aldamar"
+            className="h-10 md:h-12 w-auto"
+          />
         </Link>
 
         <div className="hidden lg:flex items-center gap-8">

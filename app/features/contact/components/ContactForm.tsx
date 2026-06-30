@@ -35,7 +35,7 @@ export function ContactForm() {
       {
         icon: "phone",
         title: "Teléfono",
-        text: "+51 991 047 687",
+        text: "+51 993 005 717",
       },
       { icon: "mail", title: "Email", text: "ventas@acerosaldamar.com" },
       {

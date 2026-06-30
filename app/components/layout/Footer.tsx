@@ -22,17 +22,11 @@ export function Footer() {
               className="flex items-center gap-3 mb-5 cursor-pointer"
               data-hover
             >
-              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-[#99d6ff] flex items-center justify-center">
-        <Logo size={50} color="#ffffff" offsetY={10} />
-              </div>
-              <div>
-                <span className="text-sm md:text-base font-bold text-white tracking-tight">
-                  ACEROS
-                </span>
-                <span className="text-sm md:text-base font-light text-primary ml-1">
-                  ALDAMAR
-                </span>
-              </div>
+              <img
+                src="/logo-aceros.svg"
+                alt="Aceros Aldamar"
+                className="h-10 md:h-12 w-auto"
+              />
             </Link>
             <p className="text-sm text-neutral-500 font-light leading-relaxed max-w-sm">
               Aceros de alta calidad para industria, comercio e infraestructura.
@@ -84,7 +78,7 @@ export function Footer() {
               <div className="space-y-3 text-sm text-neutral-500 font-light">
                 <p>Calle Inglaterra 224, Ate – Lima – Perú</p>
                 <p>Lima, Perú</p>
-                <p>+51 991 047 687</p>
+                <p>+51 993 005 717</p>
                 <p>ventas@acerosaldamar.com</p>
                 <p>RUC: 20615840221</p>
               </div>

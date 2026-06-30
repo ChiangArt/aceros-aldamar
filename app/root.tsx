@@ -100,7 +100,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               logo: "https://acerosaldamar.com/logo.ico",
               contactPoint: {
                 "@type": "ContactPoint",
-                telephone: "+51 991 047 687",
+                telephone: "+51 993 005 717",
                 contactType: "ventas",
                 areaServed: "PE",
                 availableLanguage: "Spanish",

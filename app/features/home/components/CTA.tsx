@@ -53,7 +53,7 @@ export function CTA() {
                 size="lg"
                 icon="phone"
               >
-                +51 991 047 687
+                +51 993 005 717
               </Button>
             </div>
           </div>
