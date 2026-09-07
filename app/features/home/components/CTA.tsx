@@ -48,7 +48,7 @@ export function CTA() {
               </Button>
 
               <Button
-                href="tel:+51991047687"
+                href="tel:+51993005717"
                 variant="secondary"
                 size="lg"
                 icon="phone"

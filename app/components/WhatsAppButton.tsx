@@ -5,7 +5,7 @@ export function WhatsAppButton() {
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   
-  const phoneNumber = "+51991047687"; 
+  const phoneNumber = "+51993005717"; 
   const message = "Hola, me gustaría recibir más información sobre sus productos de acero.";
   const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
