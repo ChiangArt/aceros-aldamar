@@ -14,7 +14,7 @@ export function DangerNotice() {
       aria-modal="true"
       aria-label="Aviso importante"
     >
-      <div className="relative max-h-[calc(100dvh-1.5rem)] w-full max-w-5xl overflow-hidden rounded-xl bg-white shadow-2xl sm:max-h-[calc(100dvh-3rem)] sm:rounded-2xl">
+      <div className="relative max-h-[calc(100dvh-1.5rem)] max-w-[calc(100vw-1.5rem)] overflow-hidden sm:max-h-[calc(100dvh-3rem)] sm:max-w-[calc(100vw-3rem)]">
         <button
           type="button"
           onClick={() => setIsOpen(false)}
@@ -26,7 +26,7 @@ export function DangerNotice() {
         <img
           src={dangerImage}
           alt="Aviso importante"
-          className="block max-h-[calc(100dvh-1.5rem)] w-full object-contain sm:max-h-[calc(100dvh-3rem)]"
+          className="block h-auto max-h-[calc(100dvh-1.5rem)] w-auto max-w-full object-contain sm:max-h-[calc(100dvh-3rem)]"
         />
       </div>
     </div>
