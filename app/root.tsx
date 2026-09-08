@@ -10,6 +10,7 @@ import { Navbar } from "~/components/layout/Navbar";
 import { Footer } from "~/components/layout/Footer";
 import { WhatsAppButton } from "~/components/WhatsAppButton";
 import { ScrollProgress } from "~/components/ui/ScrollProgress";
+import { DangerNotice } from "~/components/layout/DangerNotice";
 import appStyles from "./app.css?url";
 import type { Route } from "./+types/root";
 
@@ -64,14 +65,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 @keyframes marquee {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
-}
-@keyframes preloaderBar {
-  0% { width: 0; }
-  100% { width: 100%; }
-}
-@keyframes floatAnim {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
 }
 @keyframes sweep {
   0% { transform: translateX(-120%) skewX(-20deg); opacity: 0; }
@@ -133,6 +126,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="bg-[#050505] text-neutral-200 font-dm-sans overflow-x-hidden">
+        <DangerNotice />
         <ScrollProgress />
         <Navbar />
         {children}
